@@ -6,44 +6,62 @@
     <title>Kitchen Layout Calculator - Kimi Claw</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
+        html, body {
+            height: auto;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            background-attachment: fixed;
             padding: 20px;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            height: auto;
+            overflow: visible;
         }
         h1 { 
             color: #333; 
-            margin-bottom: 8px; 
-            font-size: 24px;
+            margin-bottom: 5px; 
+            font-size: 22px;
         }
         .subtitle { 
             color: #666; 
-            margin-bottom: 20px; 
-            font-size: 14px; 
+            margin-bottom: 15px; 
+            font-size: 13px; 
+        }
+        .scroll-hint {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            color: #92400e;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
         }
         .progress-bar {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 25px;
-            padding: 0 10px;
+            margin-bottom: 20px;
+            padding: 0 5px;
         }
         .progress-step {
             flex: 1;
             text-align: center;
-            font-size: 11px;
+            font-size: 10px;
             color: #999;
             position: relative;
-            padding-top: 20px;
+            padding-top: 18px;
         }
         .progress-step::before {
             content: '';
@@ -51,8 +69,8 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: #e1e1e1;
             border-radius: 50%;
         }
@@ -64,140 +82,109 @@
             background: #667eea;
         }
         .form-section {
-            margin-bottom: 25px;
-            padding: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
             background: #f9fafb;
-            border-radius: 12px;
+            border-radius: 10px;
             border: 2px solid #e5e7eb;
-        }
-        .form-section:hover {
-            border-color: #667eea;
         }
         .section-title {
             color: #667eea;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 12px;
         }
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
         }
         @media (max-width: 600px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            .container {
-                padding: 20px;
-            }
+            .form-row { grid-template-columns: 1fr; }
+            body { padding: 10px; }
+            .container { padding: 15px; }
         }
-        .form-group { 
-            margin-bottom: 15px; 
-        }
-        .form-group:last-child {
-            margin-bottom: 0;
-        }
+        .form-group { margin-bottom: 12px; }
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: #374151;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
         }
         .label-hint {
             font-weight: normal;
             color: #6b7280;
-            font-size: 11px;
+            font-size: 10px;
         }
         input, select {
             width: 100%;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 2px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 15px;
+            border-radius: 6px;
+            font-size: 14px;
             background: white;
         }
         input:focus, select:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         .default-value {
-            font-size: 11px;
+            font-size: 10px;
             color: #9ca3af;
-            margin-top: 3px;
+            margin-top: 2px;
         }
         .conditional-field {
             display: none;
-            margin-top: 15px;
-            padding-top: 15px;
+            margin-top: 12px;
+            padding-top: 12px;
             border-top: 1px dashed #d1d5db;
         }
-        .conditional-field.visible {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .conditional-field.visible { display: block; }
+        .submit-container {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 15px 0;
+            margin-top: 20px;
+            border-top: 3px solid #667eea;
+            z-index: 100;
         }
         .submit-btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 10px;
         }
         .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
-        .submit-btn:disabled { 
-            opacity: 0.6; 
-            cursor: not-allowed;
-        }
-        .success { 
-            display: none; 
-            text-align: center; 
-            padding: 40px 20px;
-        }
-        .success h2 {
-            color: #10b981;
-            margin: 20px 0 10px;
-        }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .success { display: none; text-align: center; padding: 40px 20px; }
+        .success h2 { color: #10b981; margin: 15px 0 10px; }
         .error { 
             display: none; 
             color: #ef4444; 
-            margin-top: 15px;
-            padding: 12px;
+            margin-top: 10px;
+            padding: 10px;
             background: #fee2e2;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .notice {
-            background: #dbeafe;
-            border: 1px solid #3b82f6;
-            color: #1e40af;
-            padding: 12px;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 13px;
-            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🦞 Kitchen Layout Calculator</h1>
-        <p class="subtitle">All 13 questions for Kimi Claw kitchen layout analysis</p>
+        <p class="subtitle">All 13 questions for Kimi Claw analysis</p>
+        
+        <div class="scroll-hint">👇 SCROLL DOWN TO SEE ALL SECTIONS 👇</div>
         
         <div class="progress-bar">
             <div class="progress-step active">Wall</div>
@@ -207,13 +194,7 @@
             <div class="progress-step active">Stove</div>
         </div>
         
-        <div class="notice">
-            <strong>💡 Tip:</strong> All fields have default values. You can scroll down to see all sections before submitting.
-        </div>
-        
         <form id="layoutForm">
-            
-            <!-- SECTION 1: Wall Dimensions -->
             <div class="form-section">
                 <div class="section-title">📐 Wall Dimensions (Q1-2)</div>
                 <div class="form-row">
@@ -230,7 +211,6 @@
                 </div>
             </div>
 
-            <!-- SECTION 2: Window Placement -->
             <div class="form-section">
                 <div class="section-title">🪟 Window Placement (Q3-7)</div>
                 <div class="form-group">
@@ -240,7 +220,6 @@
                         <option value="n">No (n)</option>
                     </select>
                 </div>
-                
                 <div id="windowFields" class="conditional-field visible">
                     <div class="form-row">
                         <div class="form-group">
@@ -256,79 +235,78 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="windowSide">Window from Left or Right wall? <span class="label-hint">(L/R)</span></label>
+                            <label for="windowSide">Window Side <span class="label-hint">(L/R)</span></label>
                             <select id="windowSide" name="windowSide">
                                 <option value="L" selected>Left (L)</option>
                                 <option value="R">Right (R)</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="windowDistance">Distance from that wall <span class="label-hint">("c"=center, or inches)</span></label>
+                            <label for="windowDistance">Distance <span class="label-hint">("c"=center, or inches)</span></label>
                             <input type="text" id="windowDistance" name="windowDistance" value="c">
-                            <div class="default-value">Default: c (center)</div>
+                            <div class="default-value">Default: c</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- SECTION 3: Sink Base -->
             <div class="form-section">
                 <div class="section-title">🚰 Sink Base (Q8-10)</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="sinkSide">Sink base from Left or Right wall? <span class="label-hint">(L/R)</span></label>
+                        <label for="sinkSide">Sink Side <span class="label-hint">(L/R)</span></label>
                         <select id="sinkSide" name="sinkSide">
                             <option value="L" selected>Left (L)</option>
                             <option value="R">Right (R)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="sinkDistance">Distance from that wall <span class="label-hint">("w"=align with window, or inches)</span></label>
+                        <label for="sinkDistance">Distance <span class="label-hint">("w"=window, or inches)</span></label>
                         <input type="text" id="sinkDistance" name="sinkDistance" value="w">
-                        <div class="default-value">Default: w (align with window)</div>
+                        <div class="default-value">Default: w</div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="sinkWidth">Sink Base SB[xx] <span class="label-hint">(e.g., 33 inches)</span></label>
+                    <label for="sinkWidth">Sink Base Width <span class="label-hint">(inches)</span></label>
                     <input type="number" id="sinkWidth" name="sinkWidth" value="33" min="1">
                     <div class="default-value">Default: 33"</div>
                 </div>
             </div>
 
-            <!-- SECTION 4: Dishwasher -->
             <div class="form-section">
                 <div class="section-title">🍽️ Dishwasher (Q11)</div>
                 <div class="form-group">
-                    <label for="dishwasherSide">Dishwasher side <span class="label-hint">(relative to sink)</span></label>
+                    <label for="dishwasherSide">Dishwasher Side <span class="label-hint">(L=left of sink, R=right)</span></label>
                     <select id="dishwasherSide" name="dishwasherSide">
                         <option value="L" selected>Left of Sink (L)</option>
                         <option value="R">Right of Sink (R)</option>
                     </select>
-                    <div class="default-value">Default: L (left of sink)</div>
+                    <div class="default-value">Default: L</div>
                 </div>
             </div>
 
-            <!-- SECTION 5: Stove -->
             <div class="form-section">
                 <div class="section-title">🔥 Stove (Q12-13)</div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="stoveSide">Stove from Left or Right wall? <span class="label-hint">(L/R)</span></label>
+                        <label for="stoveSide">Stove Side <span class="label-hint">(L/R)</span></label>
                         <select id="stoveSide" name="stoveSide">
                             <option value="L" selected>Left (L)</option>
                             <option value="R">Right (R)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="stoveDistance">Distance from that wall <span class="label-hint">(inches)</span></label>
+                        <label for="stoveDistance">Distance <span class="label-hint">(inches)</span></label>
                         <input type="number" id="stoveDistance" name="stoveDistance" value="40" min="0">
                         <div class="default-value">Default: 40"</div>
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn" id="submitBtn">Submit All 13 Answers to Kimi Claw</button>
-            <div class="error" id="errorMsg"></div>
+            <div class="submit-container">
+                <button type="submit" class="submit-btn" id="submitBtn">📤 Submit All 13 Answers to Kimi Claw</button>
+                <div class="error" id="errorMsg"></div>
+            </div>
         </form>
         
         <div class="success" id="successMsg">
@@ -339,7 +317,6 @@
     </div>
 
     <script>
-        // Toggle window fields visibility
         document.getElementById('hasWindow').addEventListener('change', function() {
             const windowFields = document.getElementById('windowFields');
             if (this.value === 'y') {
@@ -349,49 +326,33 @@
             }
         });
 
-        // Form submission
         document.getElementById('layoutForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const errorDiv = document.getElementById('errorMsg');
-            
-            btn.disabled = true;
-            btn.textContent = 'Sending...';
-            errorDiv.style.display = 'none';
+            \n            btn.disabled = true;
+            btn.textContent = 'Sending...';\n            errorDiv.style.display = 'none';
 
-            // Collect all 13 answers
             const formData = {
                 timestamp: new Date().toISOString(),
-                id: Date.now().toString(),
-                // Q1-2: Wall
                 wallWidth: parseInt(document.getElementById('wallWidth').value),
                 wallHeight: parseInt(document.getElementById('wallHeight').value),
-                // Q3-7: Window
                 hasWindow: document.getElementById('hasWindow').value,
                 windowWidth: document.getElementById('hasWindow').value === 'y' ? parseInt(document.getElementById('windowWidth').value) : null,
                 windowHeight: document.getElementById('hasWindow').value === 'y' ? parseInt(document.getElementById('windowHeight').value) : null,
                 windowSide: document.getElementById('hasWindow').value === 'y' ? document.getElementById('windowSide').value : null,
                 windowDistance: document.getElementById('hasWindow').value === 'y' ? document.getElementById('windowDistance').value : null,
-                // Q8-10: Sink
                 sinkSide: document.getElementById('sinkSide').value,
-                sinkDistance: document.getElementById('sinkDistance').value,
-                sinkWidth: parseInt(document.getElementById('sinkWidth').value),
-                // Q11: Dishwasher
-                dishwasherSide: document.getElementById('dishwasherSide').value,
-                // Q12-13: Stove
-                stoveSide: document.getElementById('stoveSide').value,
-                stoveDistance: parseInt(document.getElementById('stoveDistance').value)
+                sinkDistance: document.getElementById('sinkDistance').value,\n                sinkWidth: parseInt(document.getElementById('sinkWidth').value),\n                dishwasherSide: document.getElementById('dishwasherSide').value,
+                stoveSide: document.getElementById('stoveSide').value,\n                stoveDistance: parseInt(document.getElementById('stoveDistance').value)
             };
 
             console.log('All 13 Answers:', formData);
-            alert('Form data collected! Check console for all 13 answers.');
-
             setTimeout(() => {
                 document.getElementById('layoutForm').style.display = 'none';
-                document.getElementById('successMsg').style.display = 'block';
-                window.scrollTo(0, 0);
+                document.getElementById('successMsg').style.display = 'block';\n                window.scrollTo(0, 0);
             }, 500);
         });
     </script>
-</body>
+n</body>
 </html>
