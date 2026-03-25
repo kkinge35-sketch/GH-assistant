@@ -9,7 +9,9 @@
 body { font-family: system-ui, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; min-height: 100vh; }
 .container { max-width: 700px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
 h1 { color: #333; font-size: 24px; margin-bottom: 5px; }
-.subtitle { color: #666; font-size: 14px; margin-bottom: 20px; }
+.subtitle { color: #666; font-size: 14px; margin-bottom: 15px; }
+.id-box { background: #d1fae5; border: 2px solid #10b981; color: #065f46; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; }
+.id-box strong { font-size: 24px; display: block; margin: 5px 0; }
 .section { background: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 2px solid #ddd; }
 .section-title { color: #667eea; font-weight: bold; margin-bottom: 10px; font-size: 16px; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -145,23 +147,34 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 </div>
 </div>
 
-<button type="submit" class="submit-btn" id="submitBtn">📤 Submit to Telegram</button>
+<button type="submit" class="submit-btn" id="submitBtn">📤 Submit & Save to Cloud</button>
 <div class="error" id="errorMsg"></div>
 </form>
 </div>
 
 <div class="success" id="successView">
 <div style="font-size: 60px;">✅</div>
-<h2>Submitted!</h2>
-<p>Sent to Kimi Claw via Telegram</p>
+<h2>Saved Successfully!</h2>
+<p>Your kitchen layout has been saved.</p>
+
+<div class="id-box">
+<strong>Your Submission ID:</strong>
+<strong id="finalSubId" style="font-size: 28px; color: #059669;">---</strong>
+<small>Tell Kimi Claw: "My submission ID is <span id="hintId">---</span>"</small>
+</div>
+
 <a href="tg://" class="return-btn">Return to Telegram</a>
 </div>
 </div>
 
 <script>
-const params = new URLSearchParams(location.search);
-const chatId = params.get('chat_id') || '';
-const botToken = params.get('token') || '';
+// CONFIGURATION - Replace with your JSONBin credentials
+const CONFIG = {
+    BIN_ID: '69c405f9b7ec241ddca15ae7',
+    API_KEY: '$2a$10$5E5GZHhhA/o2iC5u1Ss.ruW/DtCeCTtkheRxzt.NkpSZ1qBd6hYWW'
+};
+
+const isConfigured = CONFIG.BIN_ID !== 'YOUR_BIN_ID_HERE';
 
 document.getElementById('hasWindow').addEventListener('change', function() {
 document.getElementById('windowFields').classList.toggle('show', this.value === 'y');
@@ -173,38 +186,59 @@ const btn = document.getElementById('submitBtn');
 const errorDiv = document.getElementById('errorMsg');
 
 btn.disabled = true;
-btn.textContent = 'Sending...';
+btn.textContent = 'Saving...';
 errorDiv.style.display = 'none';
 
 const hasWindow = document.getElementById('hasWindow').value;
+const submissionId = 'KL' + Date.now().toString(36).toUpperCase();
 
-const message = `Kitchen Layout:
-Wall: ${document.getElementById('wallWidth').value}" x ${document.getElementById('wallHeight').value}"
-Window: ${hasWindow}${hasWindow === 'y' ? ` (${document.getElementById('windowWidth').value}"x${document.getElementById('windowHeight').value}", ${document.getElementById('windowSide').value}, ${document.getElementById('windowDistance').value})` : ''}
-Sink: ${document.getElementById('sinkSide').value}, ${document.getElementById('sinkDistance').value}, ${document.getElementById('sinkWidth').value}"
-Dishwasher: ${document.getElementById('dishwasherSide').value} of sink
-Stove: ${document.getElementById('stoveSide').value}, ${document.getElementById('stoveDistance').value}"`;
+const formData = {
+id: submissionId,
+timestamp: new Date().toISOString(),
+q1_wallWidth: parseInt(document.getElementById('wallWidth').value),
+q2_wallHeight: parseInt(document.getElementById('wallHeight').value),
+q3_hasWindow: hasWindow,
+q4_windowWidth: hasWindow === 'y' ? parseInt(document.getElementById('windowWidth').value) : null,
+q5_windowHeight: hasWindow === 'y' ? parseInt(document.getElementById('windowHeight').value) : null,
+q6_windowSide: hasWindow === 'y' ? document.getElementById('windowSide').value : null,
+q7_windowDistance: hasWindow === 'y' ? document.getElementById('windowDistance').value : null,
+q8_sinkSide: document.getElementById('sinkSide').value,
+q9_sinkDistance: document.getElementById('sinkDistance').value,
+q10_sinkWidth: parseInt(document.getElementById('sinkWidth').value),
+q11_dishwasherSide: document.getElementById('dishwasherSide').value,
+q12_stoveSide: document.getElementById('stoveSide').value,
+q13_stoveDistance: parseInt(document.getElementById('stoveDistance').value)
+};
 
 try {
-if (botToken && chatId) {
-const res = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-method: 'POST',
-headers: {'Content-Type': 'application/json'},
-body: JSON.stringify({chat_id: chatId, text: message})
+if (isConfigured) {
+const getRes = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}/latest`, {
+headers: { 'X-Master-Key': CONFIG.API_KEY }
 });
-const result = await res.json();
-if (!result.ok) throw new Error(result.description);
+const existing = await getRes.json();
+const submissions = existing.record?.submissions || [];
+submissions.push(formData);
+await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`, {
+method: 'PUT',
+headers: {
+'Content-Type': 'application/json',
+'X-Master-Key': CONFIG.API_KEY
+},
+body: JSON.stringify({ submissions })
+});
 }
 
 document.getElementById('formView').style.display = 'none';
 document.getElementById('successView').style.display = 'block';
+document.getElementById('finalSubId').textContent = submissionId;
+document.getElementById('hintId').textContent = submissionId;
 
-setTimeout(() => location.href = 'tg://', 2000);
+setTimeout(() => location.href = 'tg://', 5000);
 } catch (err) {
 errorDiv.textContent = 'Error: ' + err.message;
 errorDiv.style.display = 'block';
 btn.disabled = false;
-btn.textContent = '📤 Submit to Telegram';
+btn.textContent = '📤 Submit & Save to Cloud';
 }
 });
 </script>
