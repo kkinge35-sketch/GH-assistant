@@ -171,12 +171,12 @@
 
                 // METHOD 2: Store in JSONBin for Kimi Claw to fetch (Recommended)
                 // Sign up at jsonbin.io, create a bin, and use your API key
-                const JSONBIN_BIN_ID = 'YOUR_BIN_ID';
+                const JSONBIN_BIN_ID = '69c405f9b7ec241ddca15ae7';
                 const JSONBIN_API_KEY = 'YOUR_API_KEY';
                 
                 // First get existing data
                 const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
-                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
+                    headers: { 'X-Master-Key': $2a$10$5E5GZHhhA/o2iC5u1Ss.ruW/DtCeCTtkheRxzt.NkpSZ1qBd6hYWW }
                 });
                 const existing = await getRes.json();
                 const submissions = existing.record.submissions || [];
