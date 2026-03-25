@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kimi Claw Form</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 { color: #333; margin-bottom: 10px; font-size: 24px; }
+        .subtitle { color: #666; margin-bottom: 30px; font-size: 14px; }
+        .form-group { margin-bottom: 20px; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        textarea { resize: vertical; min-height: 100px; }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .success {
+            display: none;
+            text-align: center;
+            color: #10b981;
+            margin-top: 20px;
+        }
+        .error {
+            display: none;
+            color: #ef4444;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🦞 Kimi Claw Request Form</h1>
+        <p class="subtitle">Fill this form to send data back to your Kimi Claw assistant</p>
+        
+        <form id="clawForm">
+            <!-- Hidden field to store chat ID from URL -->
+            <input type="hidden" id="chatId" name="chatId">
+            
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="you@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Request Type</label>
+                <select id="category" name="category" required>
+                    <option value="">Select...</option>
+                    <option value="question">Question</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="task">Task Request</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Details</label>
+                <textarea id="message" name="message" required placeholder="Describe what you need..."></textarea>
+            </div>
+            
+            <button type="submit" id="submitBtn">Submit to Kimi Claw</button>
+            <div class="error" id="errorMsg"></div>
+        </form>
+        
+        <div class="success" id="successMsg">
+            <h3>✅ Submitted Successfully!</h3>
+            <p>Your Kimi Claw assistant has been notified.</p>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters to get chat ID from Kimi Claw
+        const urlParams = new URLSearchParams(window.location.search);
+        const chatId = urlParams.get('chat_id') || 'default';
+        document.getElementById('chatId').value = chatId;
+
+        document.getElementById('clawForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const errorDiv = document.getElementById('errorMsg');
+            
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            errorDiv.style.display = 'none';
+
+            const formData = {
+                chatId: document.getElementById('chatId').value,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                category: document.getElementById('category').value,
+                message: document.getElementById('message').value,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                // METHOD 1: Send directly to Telegram Bot API (if you have bot token)
+                // Replace YOUR_BOT_TOKEN with your actual Telegram bot token
+                // and uncomment below:
+                /*
+                const TELEGRAM_TOKEN = 'YOUR_BOT_TOKEN';
+                const text = `📝 New Form Submission\n\n` +
+                           `👤 Name: ${formData.name}\n` +
+                           `📧 Email: ${formData.email}\n` +
+                           `📂 Category: ${formData.category}\n` +
+                           `💬 Message: ${formData.message}\n\n` +
+                           `⏰ ${new Date().toLocaleString()}`;
+                
+                await fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: formData.chatId,
+                        text: text,
+                        parse_mode: 'HTML'
+                    })
+                });
+                */
+
+                // METHOD 2: Store in JSONBin for Kimi Claw to fetch (Recommended)
+                // Sign up at jsonbin.io, create a bin, and use your API key
+                const JSONBIN_BIN_ID = 'YOUR_BIN_ID';
+                const JSONBIN_API_KEY = 'YOUR_API_KEY';
+                
+                // First get existing data
+                const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
+                });
+                const existing = await getRes.json();
+                const submissions = existing.record.submissions || [];
+                
+                // Add new submission
+                submissions.push(formData);
+                
+                // Update bin
+                await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify({ submissions })
+                });
+
+                // Show success
+                document.getElementById('clawForm').style.display = 'none';
+                document.getElementById('successMsg').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                errorDiv.textContent = 'Error submitting form. Please try again.';
+                errorDiv.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Submit to Kimi Claw';
+            }
+        });
+    </script>
+</body>
+</html>
