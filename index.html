@@ -41,15 +41,16 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 <body>
 <div class="container">
 <div id="formView">
-<h1>🦞 Kitchen Layout Form</h1>
+<h1> Kitchen Layout Form</h1>
 <p class="subtitle">Fill all questions. Spacing will be validated automatically.</p>
 
 <div class="validation-error" id="validationError"></div>
 
 <form id="layoutForm">
 
+<!-- 1. WALL DIMENSIONS -->
 <div class="section">
-<div class="section-title">📐 Wall Dimensions</div>
+<div class="section-title">📐 Wall Dimensions (Q1-2)</div>
 <div class="row">
 <div class="form-group">
 <label>Wall Width (inches)</label>
@@ -64,8 +65,9 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 </div>
 </div>
 
+<!-- 2. WINDOW -->
 <div class="section">
-<div class="section-title">🪟 Window</div>
+<div class="section-title">🪟 Window (Q3-7)</div>
 <div class="form-group">
 <label>Add Window? (y/n)</label>
 <select id="hasWindow" required>
@@ -103,35 +105,9 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 </div>
 </div>
 
-<div class="section">
-<div class="section-title">🔥 Stove</div>
-<div class="form-group">
-<label>Add Stove? (y/n)</label>
-<select id="hasStove" required>
-<option value="y" selected>Yes (y)</option>
-<option value="n">No (n)</option>
-</select>
-</div>
-<div id="stoveFields" class="conditional show">
-<div class="row">
-<div class="form-group">
-<label>Stove Side (L/R)</label>
-<select id="stoveSide">
-<option value="L" selected>Left (L)</option>
-<option value="R">Right (R)</option>
-</select>
-</div>
-<div class="form-group">
-<label>Distance from Wall (inches)</label>
-<input type="number" id="stoveDistance" value="40" min="0">
-<div class="default">Default: 40"</div>
-</div>
-</div>
-</div>
-</div>
-
+<!-- 3. SINK -->
 <div class="section" id="sinkSection">
-<div class="section-title">🚰 Sink <span class="badge" id="sinkBadge">Optional</span></div>
+<div class="section-title">🚰 Sink (Q8-10) <span class="badge" id="sinkBadge">Optional</span></div>
 <div class="form-group">
 <label>Add Sink? (y/n)</label>
 <select id="hasSink" required>
@@ -159,16 +135,12 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 <input type="number" id="sinkWidth" value="33" min="1">
 <div class="default">Default: 33"</div>
 </div>
-<div class="spacing-info" id="sinkSpacingInfo">
-💡 <strong>Spacing Rules:</strong><br>
-• If both Sink + Stove: gap must be > 30"<br>
-• If Dishwasher added: gap must be > 55"
-</div>
 </div>
 </div>
 
+<!-- 4. DISHWASHER -->
 <div class="section" id="dishwasherSection">
-<div class="section-title">🍽️ Dishwasher <span class="badge" id="dwBadge">Optional</span></div>
+<div class="section-title">🍽️ Dishwasher (Q11) <span class="badge" id="dwBadge">Optional</span></div>
 <div class="form-group">
 <label>Add Dishwasher? (y/n)</label>
 <select id="hasDishwasher" required>
@@ -187,6 +159,39 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 </div>
 <div class="spacing-info warning">
 ⚠️ <strong>Warning:</strong> Adding dishwasher requires minimum 55" gap between sink and stove!
+</div>
+</div>
+</div>
+
+<!-- 5. STOVE (LAST) -->
+<div class="section" id="stoveSection">
+<div class="section-title">🔥 Stove (Q12-13)</div>
+<div class="form-group">
+<label>Add Stove? (y/n)</label>
+<select id="hasStove" required>
+<option value="y" selected>Yes (y)</option>
+<option value="n">No (n)</option>
+</select>
+</div>
+<div id="stoveFields" class="conditional show">
+<div class="row">
+<div class="form-group">
+<label>Stove Side (L/R)</label>
+<select id="stoveSide">
+<option value="L" selected>Left (L)</option>
+<option value="R">Right (R)</option>
+</select>
+</div>
+<div class="form-group">
+<label>Distance from Wall (inches)</label>
+<input type="number" id="stoveDistance" value="40" min="0">
+<div class="default">Default: 40"</div>
+</div>
+</div>
+<div class="spacing-info">
+💡 <strong>Spacing Rules:</strong><br>
+• If both Sink + Stove: gap must be > 30"<br>
+• If Dishwasher added: gap must be > 55"
 </div>
 </div>
 </div>
@@ -223,11 +228,6 @@ document.getElementById('hasWindow').addEventListener('change', function() {
     document.getElementById('windowFields').classList.toggle('show', this.value === 'y');
 });
 
-document.getElementById('hasStove').addEventListener('change', function() {
-    document.getElementById('stoveFields').classList.toggle('show', this.value === 'y');
-    validateSpacing();
-});
-
 document.getElementById('hasSink').addEventListener('change', function() {
     document.getElementById('sinkFields').classList.toggle('show', this.value === 'y');
     document.getElementById('sinkBadge').textContent = this.value === 'y' ? 'Added' : 'Optional';
@@ -237,6 +237,11 @@ document.getElementById('hasSink').addEventListener('change', function() {
 document.getElementById('hasDishwasher').addEventListener('change', function() {
     document.getElementById('dishwasherFields').classList.toggle('show', this.value === 'y');
     document.getElementById('dwBadge').textContent = this.value === 'y' ? 'Added' : 'Optional';
+    validateSpacing();
+});
+
+document.getElementById('hasStove').addEventListener('change', function() {
+    document.getElementById('stoveFields').classList.toggle('show', this.value === 'y');
     validateSpacing();
 });
 
@@ -318,9 +323,9 @@ document.getElementById('layoutForm').addEventListener('submit', async (e) => {
     errorDiv.style.display = 'none';
     
     const hasWindow = document.getElementById('hasWindow').value;
-    const hasStove = document.getElementById('hasStove').value;
     const hasSink = document.getElementById('hasSink').value;
     const hasDishwasher = document.getElementById('hasDishwasher').value;
+    const hasStove = document.getElementById('hasStove').value;
     
     const submissionId = 'KL' + Date.now().toString(36).toUpperCase();
     
@@ -338,11 +343,6 @@ document.getElementById('layoutForm').addEventListener('submit', async (e) => {
             side: hasWindow === 'y' ? document.getElementById('windowSide').value : null,
             distance: hasWindow === 'y' ? document.getElementById('windowDistance').value : null
         },
-        stove: {
-            hasStove: hasStove,
-            side: hasStove === 'y' ? document.getElementById('stoveSide').value : null,
-            distance: hasStove === 'y' ? document.getElementById('stoveDistance').value : null
-        },
         sink: {
             hasSink: hasSink,
             side: hasSink === 'y' ? document.getElementById('sinkSide').value : null,
@@ -352,6 +352,11 @@ document.getElementById('layoutForm').addEventListener('submit', async (e) => {
         dishwasher: {
             hasDishwasher: hasDishwasher,
             side: hasDishwasher === 'y' ? document.getElementById('dishwasherSide').value : null
+        },
+        stove: {
+            hasStove: hasStove,
+            side: hasStove === 'y' ? document.getElementById('stoveSide').value : null,
+            distance: hasStove === 'y' ? document.getElementById('stoveDistance').value : null
         },
         validation: {
             spacingChecked: true,
