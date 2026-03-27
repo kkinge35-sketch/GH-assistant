@@ -3,17 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kitchen Layout Form</title>
+<title>Kitchen Layout - Kimi Claw</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: system-ui, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; min-height: 100vh; }
 .container { max-width: 700px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
 h1 { color: #333; font-size: 24px; margin-bottom: 5px; }
 .subtitle { color: #666; font-size: 14px; margin-bottom: 15px; }
+.validation-error { background: #fee2e2; border: 2px solid #ef4444; color: #991b1b; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; display: none; }
+.validation-error.show { display: block; animation: shake 0.5s; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 .id-box { background: #d1fae5; border: 2px solid #10b981; color: #065f46; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; }
 .id-box strong { font-size: 24px; display: block; margin: 5px 0; }
 .section { background: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 2px solid #ddd; }
-.section-title { color: #667eea; font-weight: bold; margin-bottom: 10px; font-size: 16px; }
+.section-title { color: #667eea; font-weight: bold; margin-bottom: 10px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+.section-title .badge { background: #667eea; color: white; font-size: 11px; padding: 2px 8px; border-radius: 12px; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
 .form-group { margin-bottom: 10px; }
@@ -22,9 +26,12 @@ input, select { width: 100%; padding: 8px; border: 2px solid #ccc; border-radius
 input:focus, select:focus { border-color: #667eea; outline: none; }
 .default { font-size: 11px; color: #888; margin-top: 2px; }
 .conditional { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ccc; }
-.conditional.show { display: block; }
+.conditional.show { display: block; animation: slideDown 0.3s ease; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.spacing-info { background: #dbeafe; border: 1px solid #3b82f6; color: #1e40af; padding: 10px; border-radius: 6px; font-size: 12px; margin-top: 10px; }
+.spacing-info.warning { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
 .submit-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-.submit-btn:disabled { opacity: 0.5; }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .success { display: none; text-align: center; padding: 30px; }
 .success h2 { color: green; margin: 15px 0; }
 .return-btn { display: inline-block; background: #0088cc; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px; }
@@ -34,13 +41,15 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 <body>
 <div class="container">
 <div id="formView">
-<h1> Kitchen Layout Form</h1>
-<p class="subtitle">Fill all 13 questions for layout</p>
+<h1>🦞 Kitchen Layout Form</h1>
+<p class="subtitle">Fill all questions. Spacing will be validated automatically.</p>
+
+<div class="validation-error" id="validationError"></div>
 
 <form id="layoutForm">
 
 <div class="section">
-<div class="section-title">📐 Wall Dimensions (Q1-2)</div>
+<div class="section-title">📐 Wall Dimensions</div>
 <div class="row">
 <div class="form-group">
 <label>Wall Width (inches)</label>
@@ -56,7 +65,7 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 </div>
 
 <div class="section">
-<div class="section-title">🪟 Window (Q3-7)</div>
+<div class="section-title">🪟 Window</div>
 <div class="form-group">
 <label>Add Window? (y/n)</label>
 <select id="hasWindow" required>
@@ -95,42 +104,15 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 </div>
 
 <div class="section">
-<div class="section-title">🚰 Sink Base (Q8-10)</div>
-<div class="row">
+<div class="section-title">🔥 Stove</div>
 <div class="form-group">
-<label>Sink Side (L/R)</label>
-<select id="sinkSide">
-<option value="L" selected>Left (L)</option>
-<option value="R">Right (R)</option>
+<label>Add Stove? (y/n)</label>
+<select id="hasStove" required>
+<option value="y" selected>Yes (y)</option>
+<option value="n">No (n)</option>
 </select>
 </div>
-<div class="form-group">
-<label>Distance (w=window or inches)</label>
-<input type="text" id="sinkDistance" value="w">
-<div class="default">Default: w</div>
-</div>
-</div>
-<div class="form-group">
-<label>Sink Base Width (inches)</label>
-<input type="number" id="sinkWidth" value="33" min="1">
-<div class="default">Default: 33"</div>
-</div>
-</div>
-
-<div class="section">
-<div class="section-title">🍽️ Dishwasher (Q11)</div>
-<div class="form-group">
-<label>Dishwasher Side</label>
-<select id="dishwasherSide">
-<option value="L" selected>Left of Sink (L)</option>
-<option value="R">Right of Sink (R)</option>
-</select>
-<div class="default">Default: L</div>
-</div>
-</div>
-
-<div class="section">
-<div class="section-title">🔥 Stove (Q12-13)</div>
+<div id="stoveFields" class="conditional show">
 <div class="row">
 <div class="form-group">
 <label>Stove Side (L/R)</label>
@@ -140,9 +122,71 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 </select>
 </div>
 <div class="form-group">
-<label>Distance (inches)</label>
+<label>Distance from Wall (inches)</label>
 <input type="number" id="stoveDistance" value="40" min="0">
 <div class="default">Default: 40"</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section" id="sinkSection">
+<div class="section-title">🚰 Sink <span class="badge" id="sinkBadge">Optional</span></div>
+<div class="form-group">
+<label>Add Sink? (y/n)</label>
+<select id="hasSink" required>
+<option value="y" selected>Yes (y)</option>
+<option value="n">No (n)</option>
+</select>
+</div>
+<div id="sinkFields" class="conditional show">
+<div class="row">
+<div class="form-group">
+<label>Sink Side (L/R)</label>
+<select id="sinkSide">
+<option value="L" selected>Left (L)</option>
+<option value="R">Right (R)</option>
+</select>
+</div>
+<div class="form-group">
+<label>Distance from Wall (w=window or inches)</label>
+<input type="text" id="sinkDistance" value="w">
+<div class="default">Default: w</div>
+</div>
+</div>
+<div class="form-group">
+<label>Sink Base Width (inches)</label>
+<input type="number" id="sinkWidth" value="33" min="1">
+<div class="default">Default: 33"</div>
+</div>
+<div class="spacing-info" id="sinkSpacingInfo">
+💡 <strong>Spacing Rules:</strong><br>
+• If both Sink + Stove: gap must be > 30"<br>
+• If Dishwasher added: gap must be > 55"
+</div>
+</div>
+</div>
+
+<div class="section" id="dishwasherSection">
+<div class="section-title">🍽️ Dishwasher <span class="badge" id="dwBadge">Optional</span></div>
+<div class="form-group">
+<label>Add Dishwasher? (y/n)</label>
+<select id="hasDishwasher" required>
+<option value="n" selected>No (n)</option>
+<option value="y">Yes (y)</option>
+</select>
+</div>
+<div id="dishwasherFields" class="conditional">
+<div class="form-group">
+<label>Dishwasher Side (relative to sink)</label>
+<select id="dishwasherSide">
+<option value="L" selected>Left of Sink (L)</option>
+<option value="R">Right of Sink (R)</option>
+</select>
+<div class="default">Default: L</div>
+</div>
+<div class="spacing-info warning">
+⚠️ <strong>Warning:</strong> Adding dishwasher requires minimum 55" gap between sink and stove!
 </div>
 </div>
 </div>
@@ -168,7 +212,6 @@ input:focus, select:focus { border-color: #667eea; outline: none; }
 </div>
 
 <script>
-// CONFIGURATION - Replace with your JSONBin credentials
 const CONFIG = {
     BIN_ID: '69c405f9b7ec241ddca15ae7',
     API_KEY: '$2a$10$5E5GZHhhA/o2iC5u1Ss.ruW/DtCeCTtkheRxzt.NkpSZ1qBd6hYWW'
@@ -177,69 +220,175 @@ const CONFIG = {
 const isConfigured = CONFIG.BIN_ID !== 'YOUR_BIN_ID_HERE';
 
 document.getElementById('hasWindow').addEventListener('change', function() {
-document.getElementById('windowFields').classList.toggle('show', this.value === 'y');
+    document.getElementById('windowFields').classList.toggle('show', this.value === 'y');
+});
+
+document.getElementById('hasStove').addEventListener('change', function() {
+    document.getElementById('stoveFields').classList.toggle('show', this.value === 'y');
+    validateSpacing();
+});
+
+document.getElementById('hasSink').addEventListener('change', function() {
+    document.getElementById('sinkFields').classList.toggle('show', this.value === 'y');
+    document.getElementById('sinkBadge').textContent = this.value === 'y' ? 'Added' : 'Optional';
+    validateSpacing();
+});
+
+document.getElementById('hasDishwasher').addEventListener('change', function() {
+    document.getElementById('dishwasherFields').classList.toggle('show', this.value === 'y');
+    document.getElementById('dwBadge').textContent = this.value === 'y' ? 'Added' : 'Optional';
+    validateSpacing();
+});
+
+function getAppliancePosition(side, distance, width) {
+    const wallWidth = parseInt(document.getElementById('wallWidth').value) || 120;
+    
+    if (distance === 'c' || distance === 'center') {
+        return wallWidth / 2;
+    }
+    if (distance === 'w' || distance === 'window') {
+        const windowSide = document.getElementById('windowSide').value;
+        const windowDist = document.getElementById('windowDistance').value;
+        if (windowDist === 'c') return wallWidth / 2;
+        return windowSide === 'L' ? parseInt(windowDist) : wallWidth - parseInt(windowDist);
+    }
+    
+    const dist = parseInt(distance) || 0;
+    return side === 'L' ? dist : wallWidth - dist;
+}
+
+function validateSpacing() {
+    const hasSink = document.getElementById('hasSink').value === 'y';
+    const hasStove = document.getElementById('hasStove').value === 'y';
+    const hasDishwasher = document.getElementById('hasDishwasher').value === 'y';
+    const errorDiv = document.getElementById('validationError');
+    
+    errorDiv.classList.remove('show');
+    errorDiv.textContent = '';
+    
+    if (!hasSink || !hasStove) {
+        return true;
+    }
+    
+    const sinkSide = document.getElementById('sinkSide').value;
+    const sinkDist = document.getElementById('sinkDistance').value;
+    const sinkWidth = parseInt(document.getElementById('sinkWidth').value) || 33;
+    
+    const stoveSide = document.getElementById('stoveSide').value;
+    const stoveDist = document.getElementById('stoveDistance').value;
+    const stoveWidth = 30;
+    
+    const sinkPos = getAppliancePosition(sinkSide, sinkDist, sinkWidth);
+    const stovePos = getAppliancePosition(stoveSide, stoveDist, stoveWidth);
+    
+    const gap = Math.abs(sinkPos - stovePos) - (sinkWidth/2) - (stoveWidth/2);
+    
+    const minGap = hasDishwasher ? 55 : 30;
+    const ruleText = hasDishwasher ? '55" (dishwasher required)' : '30"';
+    
+    if (gap < minGap) {
+        errorDiv.innerHTML = `<strong>Spacing Error:</strong> Gap between sink and stove is ${Math.floor(gap)}"<br>Minimum required: ${ruleText}<br>Please adjust distances.`;
+        errorDiv.classList.add('show');
+        return false;
+    }
+    
+    return true;
+}
+
+['sinkDistance', 'stoveDistance', 'sinkSide', 'stoveSide'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+        el.addEventListener('change', validateSpacing);
+        el.addEventListener('input', validateSpacing);
+    }
 });
 
 document.getElementById('layoutForm').addEventListener('submit', async (e) => {
-e.preventDefault();
-const btn = document.getElementById('submitBtn');
-const errorDiv = document.getElementById('errorMsg');
-
-btn.disabled = true;
-btn.textContent = 'Saving...';
-errorDiv.style.display = 'none';
-
-const hasWindow = document.getElementById('hasWindow').value;
-const submissionId = 'KL' + Date.now().toString(36).toUpperCase();
-
-const formData = {
-id: submissionId,
-timestamp: new Date().toISOString(),
-q1_wallWidth: parseInt(document.getElementById('wallWidth').value),
-q2_wallHeight: parseInt(document.getElementById('wallHeight').value),
-q3_hasWindow: hasWindow,
-q4_windowWidth: hasWindow === 'y' ? parseInt(document.getElementById('windowWidth').value) : null,
-q5_windowHeight: hasWindow === 'y' ? parseInt(document.getElementById('windowHeight').value) : null,
-q6_windowSide: hasWindow === 'y' ? document.getElementById('windowSide').value : null,
-q7_windowDistance: hasWindow === 'y' ? document.getElementById('windowDistance').value : null,
-q8_sinkSide: document.getElementById('sinkSide').value,
-q9_sinkDistance: document.getElementById('sinkDistance').value,
-q10_sinkWidth: parseInt(document.getElementById('sinkWidth').value),
-q11_dishwasherSide: document.getElementById('dishwasherSide').value,
-q12_stoveSide: document.getElementById('stoveSide').value,
-q13_stoveDistance: parseInt(document.getElementById('stoveDistance').value)
-};
-
-try {
-if (isConfigured) {
-const getRes = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}/latest`, {
-headers: { 'X-Master-Key': CONFIG.API_KEY }
-});
-const existing = await getRes.json();
-const submissions = existing.record?.submissions || [];
-submissions.push(formData);
-await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`, {
-method: 'PUT',
-headers: {
-'Content-Type': 'application/json',
-'X-Master-Key': CONFIG.API_KEY
-},
-body: JSON.stringify({ submissions })
-});
-}
-
-document.getElementById('formView').style.display = 'none';
-document.getElementById('successView').style.display = 'block';
-document.getElementById('finalSubId').textContent = submissionId;
-document.getElementById('hintId').textContent = submissionId;
-
-setTimeout(() => location.href = 'tg://', 5000);
-} catch (err) {
-errorDiv.textContent = 'Error: ' + err.message;
-errorDiv.style.display = 'block';
-btn.disabled = false;
-btn.textContent = '📤 Submit & Save to Cloud';
-}
+    e.preventDefault();
+    
+    if (!validateSpacing()) {
+        return;
+    }
+    
+    const btn = document.getElementById('submitBtn');
+    const errorDiv = document.getElementById('errorMsg');
+    
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+    errorDiv.style.display = 'none';
+    
+    const hasWindow = document.getElementById('hasWindow').value;
+    const hasStove = document.getElementById('hasStove').value;
+    const hasSink = document.getElementById('hasSink').value;
+    const hasDishwasher = document.getElementById('hasDishwasher').value;
+    
+    const submissionId = 'KL' + Date.now().toString(36).toUpperCase();
+    
+    const formData = {
+        id: submissionId,
+        timestamp: new Date().toISOString(),
+        wall: {
+            width: parseInt(document.getElementById('wallWidth').value),
+            height: parseInt(document.getElementById('wallHeight').value)
+        },
+        window: {
+            hasWindow: hasWindow,
+            width: hasWindow === 'y' ? parseInt(document.getElementById('windowWidth').value) : null,
+            height: hasWindow === 'y' ? parseInt(document.getElementById('windowHeight').value) : null,
+            side: hasWindow === 'y' ? document.getElementById('windowSide').value : null,
+            distance: hasWindow === 'y' ? document.getElementById('windowDistance').value : null
+        },
+        stove: {
+            hasStove: hasStove,
+            side: hasStove === 'y' ? document.getElementById('stoveSide').value : null,
+            distance: hasStove === 'y' ? document.getElementById('stoveDistance').value : null
+        },
+        sink: {
+            hasSink: hasSink,
+            side: hasSink === 'y' ? document.getElementById('sinkSide').value : null,
+            distance: hasSink === 'y' ? document.getElementById('sinkDistance').value : null,
+            width: hasSink === 'y' ? parseInt(document.getElementById('sinkWidth').value) : null
+        },
+        dishwasher: {
+            hasDishwasher: hasDishwasher,
+            side: hasDishwasher === 'y' ? document.getElementById('dishwasherSide').value : null
+        },
+        validation: {
+            spacingChecked: true,
+            minGap: hasDishwasher === 'y' && hasSink === 'y' && hasStove === 'y' ? 55 : (hasSink === 'y' && hasStove === 'y' ? 30 : 0)
+        }
+    };
+    
+    try {
+        if (isConfigured) {
+            const getRes = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}/latest`, {
+                headers: { 'X-Master-Key': CONFIG.API_KEY }
+            });
+            const existing = await getRes.json();
+            const submissions = existing.record?.submissions || [];
+            submissions.push(formData);
+            await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': CONFIG.API_KEY
+                },
+                body: JSON.stringify({ submissions })
+            });
+        }
+        
+        document.getElementById('formView').style.display = 'none';
+        document.getElementById('successView').style.display = 'block';
+        document.getElementById('finalSubId').textContent = submissionId;
+        document.getElementById('hintId').textContent = submissionId;
+        
+        setTimeout(() => location.href = 'tg://', 5000);
+    } catch (err) {
+        errorDiv.textContent = 'Error: ' + err.message;
+        errorDiv.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = '📤 Submit & Save to Cloud';
+    }
 });
 </script>
 </body>
