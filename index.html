@@ -286,7 +286,7 @@ function validateSpacing() {
     const sinkPos = getAppliancePosition(sinkSide, sinkDist, sinkWidth);
     const stovePos = getAppliancePosition(stoveSide, stoveDist, stoveWidth);
     
-    const gap = Math.abs(sinkPos - stovePos) - (sinkWidth/2) - (stoveWidth/2);
+    const gap = Math.abs(sinkPos - stovePos);
     
     const minGap = hasDishwasher ? 55 : 30;
     const ruleText = hasDishwasher ? '55" (dishwasher required)' : '30"';
