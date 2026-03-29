@@ -1,903 +1,497 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitchen Layout Form</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        .header p {
-            opacity: 0.9;
-            font-size: 14px;
-        }
-        .form-content {
-            padding: 30px;
-        }
-        .section {
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .section-number {
-            background: #667eea;
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-weight: 600;
-            color: #555;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        input[type="text"],
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-        input[type="text"]:focus,
-        input[type="number"]:focus,
-        select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        .radio-group,
-        .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .radio-option,
-        .checkbox-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 15px;
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .radio-option:hover,
-        .checkbox-option:hover {
-            border-color: #667eea;
-        }
-        .radio-option input[type="radio"],
-        .checkbox-option input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #667eea;
-        }
-        .radio-option.selected,
-        .checkbox-option.selected {
-            border-color: #667eea;
-            background: #f0f4ff;
-        }
-        .hidden {
-            display: none !important;
-        }
-        .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: block;
-            margin: 30px auto 0;
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-        .help-text {
-            font-size: 12px;
-            color: #888;
-            margin-top: 5px;
-        }
-        .conditional-section {
-            border-left-color: #28a745;
-            background: #f0fff4;
-        }
-        .wall2-section {
-            border-left-color: #dc3545;
-            background: #fff5f5;
-        }
-        #submissionId {
-            background: #e8f5e9;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            margin-top: 20px;
-            display: none;
-        }
-        #submissionId h3 {
-            color: #2e7d32;
-            margin-bottom: 10px;
-        }
-        #submissionId p {
-            font-size: 24px;
-            font-weight: bold;
-            color: #1b5e20;
-            font-family: monospace;
-        }
-        .info-box {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitchen Layout - Kimi Claw</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; min-height: 100vh; }
+.container { max-width: 750px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+h1 { color: #333; font-size: 24px; margin-bottom: 5px; }
+.subtitle { color: #666; font-size: 14px; margin-bottom: 15px; }
+.validation-error { background: #fee2e2; border: 2px solid #ef4444; color: #991b1b; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; display: none; }
+.validation-error.show { display: block; animation: shake 0.5s; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+.id-box { background: #d1fae5; border: 2px solid #10b981; color: #065f46; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; }
+.id-box strong { font-size: 24px; display: block; margin: 5px 0; }
+.section { background: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 2px solid #ddd; }
+.section-title { color: #667eea; font-weight: bold; margin-bottom: 10px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+.section-title .num { background: #667eea; color: white; font-size: 12px; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.section-title .badge { background: #667eea; color: white; font-size: 10px; padding: 2px 8px; border-radius: 12px; margin-left: auto; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+.form-group { margin-bottom: 12px; }
+label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; color: #374151; }
+.help-text { font-size: 12px; color: #6b7280; margin-top: 4px; font-style: italic; }
+input, select { width: 100%; padding: 10px; border: 2px solid #d1d5db; border-radius: 6px; font-size: 14px; background: white; }
+input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 0 0 3px rgba(102,126,234,0.1); }
+.default { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+.conditional { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #d1d5db; }
+.conditional.show { display: block; animation: slideDown 0.3s ease; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.spacing-info { background: #dbeafe; border: 1px solid #3b82f6; color: #1e40af; padding: 10px; border-radius: 6px; font-size: 12px; margin-top: 10px; }
+.spacing-info.warning { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+.submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.success { display: none; text-align: center; padding: 30px; }
+.success h2 { color: green; margin: 15px 0; }
+.return-btn { display: inline-block; background: #0088cc; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 20px; }
+.error { color: red; background: #ffeeee; padding: 10px; border-radius: 5px; margin-top: 10px; display: none; }
+.radio-group { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.radio-option { display: flex; align-items: center; gap: 10px; padding: 12px; background: white; border: 2px solid #d1d5db; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+.radio-option:hover { border-color: #667eea; background: #f9fafb; }
+.radio-option input[type="radio"] { width: auto; margin: 0; }
+.radio-option.selected { border-color: #667eea; background: #eef2ff; }
+.layout-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+@media (max-width: 500px) { .layout-grid { grid-template-columns: 1fr; } }
+.layout-option { text-align: center; padding: 15px; background: white; border: 2px solid #ddd; border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+.layout-option:hover { border-color: #667eea; }
+.layout-option.selected { border-color: #667eea; background: #eef2ff; }
+.layout-option .icon { font-size: 32px; margin-bottom: 8px; }
+.layout-option .name { font-weight: 600; font-size: 14px; }
+.layout-option .desc { font-size: 11px; color: #666; margin-top: 4px; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🏠 Kitchen Layout Designer</h1>
-            <p>Fill in your kitchen measurements and we'll generate a custom cabinet layout</p>
-        </div>
-        
-        <form id="kitchenForm" class="form-content">
-            <!-- Q-1: Layout Type -->
-            <div class="section">
-                <div class="section-title">
-                    <span class="section-number">-1</span>
-                    Kitchen Layout Type
-                </div>
-                <div class="form-group">
-                    <label>Select your kitchen layout:</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="layoutType" value="single" checked>
-                            <span>Single Wall</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="layoutType" value="l_shape">
-                            <span>L-Shape</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="layoutType" value="u_shape" disabled>
-                            <span>U-Shape (Coming Soon)</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+<div class="container">
+<div id="formView">
+<h1>🦞 Kitchen Layout Calculator</h1>
+<p class="subtitle">Complete all sections. Spacing will be validated automatically.</p>
 
-            <!-- Q0: Wall End Conditions -->
-            <div class="section">
-                <div class="section-title">
-                    <span class="section-number">0</span>
-                    Wall 1 End Conditions
-                </div>
-                <div class="form-group">
-                    <label>How do the ends of Wall 1 terminate?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="endCondition" value="both_open" checked>
-                            <span>Open both sides</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="endCondition" value="left_open">
-                            <span>Open left, Wall right</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="endCondition" value="right_open">
-                            <span>Wall left, Open right</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="endCondition" value="wall_to_wall">
-                            <span>Wall to wall</span>
-                        </label>
-                    </div>
-                    <p class="help-text">This determines end panel placement and gap calculations</p>
-                </div>
-            </div>
+<div class="validation-error" id="validationError"></div>
 
-            <!-- Wall 1 Section -->
-            <div class="section">
-                <div class="section-title">
-                    <span class="section-number">1</span>
-                    Wall 1 (Main Wall)
-                </div>
-                
-                <div class="form-group">
-                    <label for="q1_wallWidth">1. Wall width (inches)</label>
-                    <input type="number" id="q1_wallWidth" name="q1_wallWidth" value="240" min="60" max="600" required>
-                </div>
+<form id="layoutForm">
 
-                <div class="form-group">
-                    <label for="q2_wallHeight">2. Wall height (inches)</label>
-                    <select id="q2_wallHeight" name="q2_wallHeight">
-                        <option value="90">90"</option>
-                        <option value="96" selected>96"</option>
-                        <option value="108">108"</option>
-                    </select>
-                </div>
+<!-- 0. KITCHEN LAYOUT TYPE -->
+<div class="section">
+<div class="section-title"><span class="num">0</span>Kitchen Layout Type</div>
+<div class="form-group">
+<label>Select your kitchen layout:</label>
+<div class="layout-grid">
+<div class="layout-option selected" onclick="selectLayout('single')">
+<div class="icon">➖</div>
+<div class="name">Single Wall</div>
+<div class="desc">One straight wall</div>
+</div>
+<div class="layout-option" onclick="selectLayout('lshape')">
+<div class="icon">📐</div>
+<div class="name">L-Shape</div>
+<div class="desc">Two perpendicular walls</div>
+</div>
+<div class="layout-option" style="opacity:0.5; cursor:not-allowed;">
+<div class="icon">⬜</div>
+<div class="name">U-Shape</div>
+<div class="desc">Coming Soon</div>
+</div>
+<div class="layout-option" style="opacity:0.5; cursor:not-allowed;">
+<div class="icon">🏝️</div>
+<div class="name">Island</div>
+<div class="desc">Coming Soon</div>
+</div>
+</div>
+<input type="hidden" id="layoutType" value="single">
+</div>
+</div>
 
-                <div class="form-group">
-                    <label>3. Add window?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="hasWindow" value="y" checked>
-                            <span>Yes</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="hasWindow" value="n">
-                            <span>No</span>
-                        </label>
-                    </div>
-                </div>
+<!-- 1. WALL END CONDITIONS -->
+<div class="section">
+<div class="section-title"><span class="num">1</span>Wall End Conditions</div>
+<div class="form-group">
+<label>How do the ends of Wall 1 terminate?</label>
+<div class="radio-group">
+<label class="radio-option selected">
+<input type="radio" name="wallConfig" value="both" checked onchange="updateWallConfig()">
+<span><strong>Open both sides</strong> - Galley/peninsula style</span>
+</label>
+<label class="radio-option">
+<input type="radio" name="wallConfig" value="left" onchange="updateWallConfig()">
+<span><strong>Open left, Wall right</strong> - Right corner</span>
+</label>
+<label class="radio-option">
+<input type="radio" name="wallConfig" value="right" onchange="updateWallConfig()">
+<span><strong>Wall left, Open right</strong> - Left corner</span>
+</label>
+<label class="radio-option">
+<input type="radio" name="wallConfig" value="walled" onchange="updateWallConfig()">
+<span><strong>Wall to wall</strong> - Enclosed on both sides</span>
+</label>
+</div>
+<div class="help-text">This determines end panel placement and gap calculations</div>
+</div>
+</div>
 
-                <div id="windowFields">
-                    <div class="form-group">
-                        <label for="q4_windowWidth">4. Window width (inches)</label>
-                        <input type="number" id="q4_windowWidth" name="q4_windowWidth" value="40" min="20" max="120">
-                    </div>
+<!-- 2. WALL DIMENSIONS -->
+<div class="section">
+<div class="section-title"><span class="num">2</span>Wall 1 (Main Wall) <span class="badge" id="wall2badge" style="display:none;">Wall 2 →</span></div>
+<div class="row">
+<div class="form-group">
+<label>Wall width (inches)</label>
+<input type="number" id="wallWidth" value="120" min="1" required>
+<div class="default">Default: 120"</div>
+</div>
+<div class="form-group">
+<label>Wall height (inches)</label>
+<input type="number" id="wallHeight" value="96" min="1" required>
+<div class="default">Default: 96"</div>
+</div>
+</div>
+</div>
 
-                    <div class="form-group">
-                        <label for="q5_windowHeight">5. Window height (inches)</label>
-                        <input type="number" id="q5_windowHeight" name="q5_windowHeight" value="40" min="20" max="80">
-                    </div>
+<!-- WALL 2 (for L-Shape) -->
+<div class="section" id="wall2section" style="display:none;">
+<div class="section-title"><span class="num">2b</span>Wall 2 (Return Wall)</div>
+<div class="row">
+<div class="form-group">
+<label>Wall 2 width (inches)</label>
+<input type="number" id="wall2Width" value="84" min="1">
+<div class="default">Default: 84"</div>
+</div>
+<div class="form-group">
+<label>Wall 2 position</label>
+<select id="wall2Position">
+<option value="left">Extends to Left</option>
+<option value="right" selected>Extends to Right</option>
+</select>
+</div>
+</div>
+</div>
 
-                    <div class="form-group">
-                        <label>6. Window position from which wall?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="winSide" value="l" checked>
-                                <span>Left wall</span>
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="winSide" value="r">
-                                <span>Right wall</span>
-                            </label>
-                        </div>
-                    </div>
+<!-- 3. WINDOW -->
+<div class="section">
+<div class="section-title"><span class="num">3</span>Window</div>
+<div class="form-group">
+<label>Add window? (y/n)</label>
+<select id="hasWindow" required onchange="toggleWindow()">
+<option value="y" selected>Yes (y)</option>
+<option value="n">No (n)</option>
+</select>
+</div>
+<div id="windowFields" class="conditional show">
+<div class="row">
+<div class="form-group">
+<label>Window width (inches)</label>
+<input type="number" id="windowWidth" value="30">
+<div class="default">Default: 30"</div>
+</div>
+<div class="form-group">
+<label>Window height (inches)</label>
+<input type="number" id="windowHeight" value="40">
+<div class="default">Default: 40"</div>
+</div>
+</div>
+<div class="row">
+<div class="form-group">
+<label>Window position from which wall?</label>
+<select id="windowSide">
+<option value="L" selected>Left wall</option>
+<option value="R">Right wall</option>
+</select>
+</div>
+<div class="form-group">
+<label>Window distance</label>
+<input type="text" id="windowDistance" value="c">
+<div class="help-text">Enter "c" to center, or enter inches from the wall selected above</div>
+</div>
+</div>
+</div>
+</div>
 
-                    <div class="form-group">
-                        <label for="q7_windowDistance">7. Window distance ("c" for center, or inches)</label>
-                        <input type="text" id="q7_windowDistance" name="q7_windowDistance" value="c" placeholder="c or inches">
-                        <p class="help-text">Enter "c" to center, or enter inches from the wall selected above</p>
-                    </div>
-                </div>
+<!-- 4. SINK -->
+<div class="section" id="sinkSection">
+<div class="section-title"><span class="num">4</span>Sink Base <span class="badge" id="sinkBadge">Optional</span></div>
+<div class="form-group">
+<label>Add sink? (y/n)</label>
+<select id="hasSink" required onchange="toggleSink()">
+<option value="y" selected>Yes (y)</option>
+<option value="n">No (n)</option>
+</select>
+</div>
+<div id="sinkFields" class="conditional show">
+<div class="row">
+<div class="form-group">
+<label>Sink base from which wall?</label>
+<select id="sinkSide">
+<option value="L" selected>Left wall</option>
+<option value="R">Right wall</option>
+</select>
+</div>
+<div class="form-group">
+<label>Sink position</label>
+<input type="text" id="sinkDistance" value="w">
+<div class="help-text">Enter "w" to align with window, or enter inches from the wall selected above</div>
+</div>
+</div>
+<div class="form-group">
+<label>Sink base width (inches)</label>
+<input type="number" id="sinkWidth" value="33" min="1">
+<div class="default">Default: 33"</div>
+</div>
+</div>
+</div>
 
-                <!-- Sink Section -->
-                <div class="form-group">
-                    <label>8. Add sink?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="hasSink" value="y" checked>
-                            <span>Yes</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="hasSink" value="n">
-                            <span>No</span>
-                        </label>
-                    </div>
-                </div>
+<!-- 5. DISHWASHER -->
+<div class="section" id="dishwasherSection">
+<div class="section-title"><span class="num">5</span>Dishwasher <span class="badge" id="dwBadge">Optional</span></div>
+<div class="form-group">
+<label>Add dishwasher? (y/n)</label>
+<select id="hasDishwasher" required onchange="toggleDishwasher()">
+<option value="n" selected>No (n)</option>
+<option value="y">Yes (y)</option>
+</select>
+</div>
+<div id="dishwasherFields" class="conditional">
+<div class="form-group">
+<label>Dishwasher side</label>
+<select id="dishwasherSide">
+<option value="L" selected>Left of sink</option>
+<option value="R">Right of sink</option>
+</select>
+<div class="default">Default: Left of sink</div>
+</div>
+<div class="spacing-info warning">
+⚠️ <strong>Important:</strong> Adding dishwasher requires minimum 55" gap between sink and stove (vs 30" without dishwasher)
+</div>
+</div>
+</div>
 
-                <div id="sinkFields">
-                    <div class="form-group">
-                        <label>9. Sink base from which wall?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="sinkSide" value="l" checked>
-                                <span>Left wall</span>
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="sinkSide" value="r">
-                                <span>Right wall</span>
-                            </label>
-                        </div>
-                    </div>
+<!-- 6. STOVE -->
+<div class="section" id="stoveSection">
+<div class="section-title"><span class="num">6</span>Stove</div>
+<div class="form-group">
+<label>Add stove? (y/n)</label>
+<select id="hasStove" required onchange="toggleStove()">
+<option value="y" selected>Yes (y)</option>
+<option value="n">No (n)</option>
+</select>
+</div>
+<div id="stoveFields" class="conditional show">
+<div class="row">
+<div class="form-group">
+<label>Stove from which wall?</label>
+<select id="stoveSide">
+<option value="L" selected>Left wall</option>
+<option value="R">Right wall</option>
+</select>
+</div>
+<div class="form-group">
+<label>Stove position</label>
+<input type="text" id="stoveDistance" value="40">
+<div class="help-text">Enter "c" to place contiguous to sink area, or enter inches from the wall selected above</div>
+</div>
+</div>
+<div class="spacing-info" id="spacingRules">
+💡 <strong>Spacing Rules:</strong><br>
+• Sink + Stove only: minimum 30" gap required<br>
+• With Dishwasher: minimum 55" gap required
+</div>
+</div>
+</div>
 
-                    <div class="form-group">
-                        <label for="q9_sinkDistance">10. Sink position ("w" for window center, or inches)</label>
-                        <input type="text" id="q9_sinkDistance" name="q9_sinkDistance" value="w" placeholder="w or inches">
-                        <p class="help-text">Enter "w" to align with window, or enter inches from the wall selected above</p>
-                    </div>
+<button type="submit" class="submit-btn" id="submitBtn">📤 Submit & Save to Cloud</button>
+<div class="error" id="errorMsg"></div>
+</form>
+</div>
 
-                    <div class="form-group">
-                        <label for="q10_sinkWidth">11. Sink base width</label>
-                        <select id="q10_sinkWidth" name="q10_sinkWidth">
-                            <option value="30">SB30 (30")</option>
-                            <option value="33" selected>SB33 (33")</option>
-                            <option value="36">SB36 (36")</option>
-                        </select>
-                    </div>
+<div class="success" id="successView">
+<div style="font-size: 60px;">✅</div>
+<h2>Submitted Successfully!</h2>
+<p>Your kitchen layout has been saved.</p>
 
-                    <div class="form-group">
-                        <label>12. Add dishwasher?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="hasDW" value="y" checked>
-                                <span>Yes</span>
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="hasDW" value="n">
-                                <span>No</span>
-                            </label>
-                        </div>
-                    </div>
+<div class="id-box">
+<strong>Your Submission ID:</strong>
+<strong id="finalSubId" style="font-size: 28px; color: #059669;">---</strong>
+<small>Tell Kimi Claw: "My submission ID is <span id="hintId">---</span>"</small>
+</div>
 
-                    <div id="dwFields">
-                        <div class="form-group">
-                            <label>13. Dishwasher side</label>
-                            <div class="radio-group">
-                                <label class="radio-option">
-                                    <input type="radio" name="dwSide" value="left" checked>
-                                    <span>Left of sink</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="dwSide" value="right">
-                                    <span>Right of sink</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<a href="tg://" class="return-btn">Return to Telegram</a>
+</div>
+</div>
 
-                <!-- Stove Section -->
-                <div class="form-group">
-                    <label>14. Add stove?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="hasStove" value="y" checked>
-                            <span>Yes</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="hasStove" value="n">
-                            <span>No</span>
-                        </label>
-                    </div>
-                </div>
+<script>
+const CONFIG = {
+    BIN_ID: '69c405f9b7ec241ddca15ae7',
+    API_KEY: '$2a$10$5E5GZHhhA/o2iC5u1Ss.ruW/DtCeCTtkheRxzt.NkpSZ1qBd6hYWW'
+};
 
-                <div id="stoveFields">
-                    <div class="form-group">
-                        <label>15. Stove from which wall?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="stoveSide" value="l" checked>
-                                <span>Left wall</span>
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="stoveSide" value="r">
-                                <span>Right wall</span>
-                            </label>
-                        </div>
-                    </div>
+const isConfigured = CONFIG.BIN_ID !== 'YOUR_BIN_ID_HERE';
 
-                    <div class="form-group">
-                        <label for="q13_stoveDistance">16. Stove position ("c" for contiguous, or inches)</label>
-                        <input type="text" id="q13_stoveDistance" name="q13_stoveDistance" value="c" placeholder="c or inches">
-                        <p class="help-text">Enter "c" to place contiguous to sink area, or enter inches from the wall selected above</p>
-                    </div>
-                </div>
-            </div>
+function selectLayout(type) {
+    document.querySelectorAll('.layout-option').forEach(opt => opt.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById('layoutType').value = type;
+    if (type === 'lshape') {
+        document.getElementById('wall2section').style.display = 'block';
+        document.getElementById('wall2badge').style.display = 'inline';
+    } else {
+        document.getElementById('wall2section').style.display = 'none';
+        document.getElementById('wall2badge').style.display = 'none';
+    }
+}
 
-            <!-- L-Shape Corner Section -->
-            <div id="cornerSection" class="section conditional-section hidden">
-                <div class="section-title">
-                    <span class="section-number">★</span>
-                    Corner Configuration
-                </div>
-                
-                <div class="form-group">
-                    <label>Corner cabinet type:</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="cornerCabinet" value="BER36" checked>
-                            <span>BER36 (36" Easy Reach)</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="cornerCabinet" value="BER33">
-                            <span>BER33 (33" Easy Reach)</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="cornerCabinet" value="BBC36-42">
-                            <span>BBC36-42 (Blind Corner)</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="cornerCabinet" value="BBC42-45">
-                            <span>BBC42-45 (Blind Corner)</span>
-                        </label>
-                    </div>
-                </div>
+function updateWallConfig() {
+    document.querySelectorAll('input[name="wallConfig"]').forEach(radio => {
+        radio.closest('.radio-option').classList.toggle('selected', radio.checked);
+    });
+}
 
-                <div class="form-group">
-                    <label>Which end of Wall 1 connects to Wall 2?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="cornerPosition" value="right" checked>
-                            <span>Right end</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="cornerPosition" value="left">
-                            <span>Left end</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+function toggleWindow() {
+    document.getElementById('windowFields').classList.toggle('show', document.getElementById('hasWindow').value === 'y');
+}
 
-            <!-- Wall 2 Section (L-Shape only) -->
-            <div id="wall2Section" class="section wall2-section hidden">
-                <div class="section-title">
-                    <span class="section-number">2</span>
-                    Wall 2 (Adjacent Wall)
-                </div>
-                
-                <div class="info-box">
-                    Wall 2 starts from the corner cabinet. Fill in the measurements for the adjacent wall.
-                </div>
+function toggleSink() {
+    const hasSink = document.getElementById('hasSink').value === 'y';
+    document.getElementById('sinkFields').classList.toggle('show', hasSink);
+    document.getElementById('sinkBadge').textContent = hasSink ? 'Added' : 'Optional';
+    validateSpacing();
+}
 
-                <div class="form-group">
-                    <label for="wall2_q1_wallWidth">Wall 2 width (inches)</label>
-                    <input type="number" id="wall2_q1_wallWidth" name="wall2_q1_wallWidth" value="120" min="60" max="300">
-                </div>
+function toggleDishwasher() {
+    const hasDw = document.getElementById('hasDishwasher').value === 'y';
+    document.getElementById('dishwasherFields').classList.toggle('show', hasDw);
+    document.getElementById('dwBadge').textContent = hasDw ? 'Added' : 'Optional';
+    validateSpacing();
+}
 
-                <div class="form-group">
-                    <label for="wall2_q2_wallHeight">Wall 2 height (inches)</label>
-                    <select id="wall2_q2_wallHeight" name="wall2_q2_wallHeight">
-                        <option value="90">90"</option>
-                        <option value="96" selected>96"</option>
-                        <option value="108">108"</option>
-                    </select>
-                </div>
+function toggleStove() {
+    document.getElementById('stoveFields').classList.toggle('show', document.getElementById('hasStove').value === 'y');
+    validateSpacing();
+}
 
-                <div class="form-group">
-                    <label>Add window on Wall 2?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="wall2_hasWindow" value="y">
-                            <span>Yes</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="wall2_hasWindow" value="n" checked>
-                            <span>No</span>
-                        </label>
-                    </div>
-                </div>
+function getPosition(side, distanceInput, width) {
+    const wallWidth = parseInt(document.getElementById('wallWidth').value) || 120;
+    const distance = distanceInput.toLowerCase().trim();
+    if (distance === 'c') return wallWidth / 2;
+    if (distance === 'w') {
+        const windowSide = document.getElementById('windowSide').value;
+        const windowDist = document.getElementById('windowDistance').value.toLowerCase();
+        if (windowDist === 'c') return wallWidth / 2;
+        return windowSide === 'L' ? parseInt(windowDist) || 0 : wallWidth - (parseInt(windowDist) || 0);
+    }
+    const dist = parseInt(distance) || 0;
+    return side === 'L' ? dist : wallWidth - dist;
+}
 
-                <div id="wall2WindowFields" class="hidden">
-                    <div class="form-group">
-                        <label for="wall2_q4_windowWidth">Window width (inches)</label>
-                        <input type="number" id="wall2_q4_windowWidth" name="wall2_q4_windowWidth" value="30" min="20" max="120">
-                    </div>
+function validateSpacing() {
+    const hasSink = document.getElementById('hasSink').value === 'y';
+    const hasStove = document.getElementById('hasStove').value === 'y';
+    const hasDishwasher = document.getElementById('hasDishwasher').value === 'y';
+    const errorDiv = document.getElementById('validationError');
+    errorDiv.classList.remove('show');
+    if (!hasSink || !hasStove) return true;
+    
+    const sinkWidth = parseInt(document.getElementById('sinkWidth').value) || 33;
+    const sinkPos = getPosition(document.getElementById('sinkSide').value, document.getElementById('sinkDistance').value, sinkWidth);
+    const stovePos = getPosition(document.getElementById('stoveSide').value, document.getElementById('stoveDistance').value, 30);
+    const gap = Math.abs(sinkPos - stovePos) - (sinkWidth/2) - 15;
+    const minGap = hasDishwasher ? 55 : 30;
+    
+    if (gap < minGap) {
+        errorDiv.innerHTML = `<strong>⚠️ Spacing Error:</strong> Gap between sink and stove is ${Math.floor(gap)}"<br>Minimum required: ${minGap}" ${hasDishwasher ? '(dishwasher requires extra space)' : ''}<br>Please adjust positions.`;
+        errorDiv.classList.add('show');
+        return false;
+    }
+    return true;
+}
 
-                    <div class="form-group">
-                        <label for="wall2_q5_windowHeight">Window height (inches)</label>
-                        <input type="number" id="wall2_q5_windowHeight" name="wall2_q5_windowHeight" value="40" min="20" max="80">
-                    </div>
+['sinkDistance', 'stoveDistance', 'sinkSide', 'stoveSide', 'sinkWidth', 'hasDishwasher'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+        el.addEventListener('change', validateSpacing);
+        el.addEventListener('input', validateSpacing);
+    }
+});
 
-                    <div class="form-group">
-                        <label>Window from which wall?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="wall2_winSide" value="l" checked>
-                                <span>Left wall (corner)</span>
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="wall2_winSide" value="r">
-                                <span>Right wall (outer)</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="wall2_q7_windowDistance">Window distance ("c" for center, or inches)</label>
-                        <input type="text" id="wall2_q7_windowDistance" name="wall2_q7_windowDistance" value="c">
-                        <p class="help-text">Enter "c" to center, or enter inches from the wall selected above</p>
-                    </div>
-                </div>
-
-                <!-- Wall 2 Sink Section -->
-                <div class="form-group">
-                    <label>Add sink on Wall 2?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="wall2_hasSink" value="y">
-                            <span>Yes</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="wall2_hasSink" value="n" checked>
-                            <span>No</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div id="wall2SinkFields" class="hidden">
-                    <div class="form-group">
-                        <label>Sink from which wall?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="wall2_sinkSide" value="l" checked>
-                                <span>Left wall (corner)</span>
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="wall2_sinkSide" value="r">
-                                <span>Right wall (outer)</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="wall2_q9_sinkDistance">Sink position ("w" for window center, or inches)</label>
-                        <input type="text" id="wall2_q9_sinkDistance" name="wall2_q9_sinkDistance" value="w" placeholder="w or inches">
-                        <p class="help-text">Enter "w" to align with window, or enter inches from the wall selected above</p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="wall2_q10_sinkWidth">Sink base width</label>
-                        <select id="wall2_q10_sinkWidth" name="wall2_q10_sinkWidth">
-                            <option value="30">SB30 (30")</option>
-                            <option value="33" selected>SB33 (33")</option>
-                            <option value="36">SB36 (36")</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Add dishwasher on Wall 2?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="wall2_hasDW" value="y">
-                                <span>Yes</span>
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="wall2_hasDW" value="n" checked>
-                                <span>No</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div id="wall2DWFields" class="hidden">
-                        <div class="form-group">
-                            <label>Dishwasher side</label>
-                            <div class="radio-group">
-                                <label class="radio-option">
-                                    <input type="radio" name="wall2_dwSide" value="left" checked>
-                                    <span>Left of sink (toward corner)</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="wall2_dwSide" value="right">
-                                    <span>Right of sink</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Wall 2 Stove Section -->
-                <div class="form-group">
-                    <label>Add stove on Wall 2?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="wall2_hasStove" value="y">
-                            <span>Yes</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="wall2_hasStove" value="n" checked>
-                            <span>No</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div id="wall2StoveFields" class="hidden">
-                    <div class="form-group">
-                        <label>Stove from which wall?</label>
-                        <div class="radio-group">
-                            <label class="radio-option">
-                                <input type="radio" name="wall2_stoveSide" value="l" checked>
-                                <span>Left wall (corner)</span>
-                            </label>
-                            <label class="radio-option">
-                                <input type="radio" name="wall2_stoveSide" value="r">
-                                <span>Right wall (outer)</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="wall2_q13_stoveDistance">Stove position ("c" for contiguous, or inches)</label>
-                        <input type="text" id="wall2_q13_stoveDistance" name="wall2_q13_stoveDistance" value="c" placeholder="c or inches">
-                        <p class="help-text">Enter "c" to place contiguous to sink area, or enter inches from the wall selected above</p>
-                    </div>
-                </div>
-            </div>
-
-            <button type="submit" class="btn">Generate Kitchen Layout</button>
-        </form>
-
-        <div id="submissionId">
-            <h3>✅ Submission Successful!</h3>
-            <p>Your Submission ID:</p>
-            <p id="idDisplay"></p>
-            <p style="font-size: 14px; color: #666; margin-top: 10px;">
-                Copy this ID and send it to get your drawing.
-            </p>
-        </div>
-    </div>
-
-    <script>
-        // Generate unique submission ID
-        function generateId() {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let id = '';
-            for (let i = 0; i < 10; i++) {
-                id += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return id;
+document.getElementById('layoutForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validateSpacing()) return;
+    
+    const btn = document.getElementById('submitBtn');
+    const errorDiv = document.getElementById('errorMsg');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+    errorDiv.style.display = 'none';
+    
+    const wallConfig = document.querySelector('input[name="wallConfig"]:checked').value;
+    const hasWindow = document.getElementById('hasWindow').value;
+    const hasSink = document.getElementById('hasSink').value;
+    const hasDishwasher = document.getElementById('hasDishwasher').value;
+    const hasStove = document.getElementById('hasStove').value;
+    const submissionId = 'KL' + Date.now().toString(36).toUpperCase();
+    
+    const formData = {
+        id: submissionId,
+        timestamp: new Date().toISOString(),
+        layout: {
+            type: document.getElementById('layoutType').value,
+            typeName: {'single': 'Single Wall', 'lshape': 'L-Shape'}[document.getElementById('layoutType').value]
+        },
+        wallConfig: {
+            type: wallConfig,
+            description: {'both': 'Open both sides', 'left': 'Open left, Wall right', 'right': 'Wall left, Open right', 'walled': 'Wall to wall'}[wallConfig]
+        },
+        wall1: {
+            width: parseInt(document.getElementById('wallWidth').value),
+            height: parseInt(document.getElementById('wallHeight').value)
+        },
+        wall2: document.getElementById('layoutType').value === 'lshape' ? {
+            width: parseInt(document.getElementById('wall2Width').value) || 84,
+            position: document.getElementById('wall2Position').value
+        } : null,
+        window: {
+            hasWindow: hasWindow,
+            width: hasWindow === 'y' ? parseInt(document.getElementById('windowWidth').value) : null,
+            height: hasWindow === 'y' ? parseInt(document.getElementById('windowHeight').value) : null,
+            side: hasWindow === 'y' ? document.getElementById('windowSide').value : null,
+            distance: hasWindow === 'y' ? document.getElementById('windowDistance').value : null
+        },
+        sink: {
+            hasSink: hasSink,
+            side: hasSink === 'y' ? document.getElementById('sinkSide').value : null,
+            distance: hasSink === 'y' ? document.getElementById('sinkDistance').value : null,
+            width: hasSink === 'y' ? parseInt(document.getElementById('sinkWidth').value) : null
+        },
+        dishwasher: {
+            hasDishwasher: hasDishwasher,
+            side: hasDishwasher === 'y' ? document.getElementById('dishwasherSide').value : null
+        },
+        stove: {
+            hasStove: hasStove,
+            side: hasStove === 'y' ? document.getElementById('stoveSide').value : null,
+            distance: hasStove === 'y' ? document.getElementById('stoveDistance').value : null
+        },
+        validation: {
+            spacingChecked: true,
+            minGapRequired: hasDishwasher === 'y' && hasSink === 'y' && hasStove === 'y' ? 55 : (hasSink === 'y' && hasStove === 'y' ? 30 : 0)
         }
-
-        // Show/hide window fields
-        document.querySelectorAll('input[name="hasWindow"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('windowFields').classList.toggle('hidden', this.value === 'n');
+    };
+    
+    try {
+        if (isConfigured) {
+            const getRes = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}/latest`, {
+                headers: { 'X-Master-Key': CONFIG.API_KEY }
             });
-        });
-
-        // Show/hide sink fields
-        document.querySelectorAll('input[name="hasSink"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('sinkFields').classList.toggle('hidden', this.value === 'n');
+            const existing = await getRes.json();
+            const submissions = existing.record?.submissions || [];
+            submissions.push(formData);
+            await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json', 'X-Master-Key': CONFIG.API_KEY},
+                body: JSON.stringify({ submissions })
             });
-        });
-
-        // Show/hide DW fields
-        document.querySelectorAll('input[name="hasDW"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('dwFields').classList.toggle('hidden', this.value === 'n');
-            });
-        });
-
-        // Show/hide stove fields
-        document.querySelectorAll('input[name="hasStove"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('stoveFields').classList.toggle('hidden', this.value === 'n');
-            });
-        });
-
-        // Show/hide Wall 2 window fields
-        document.querySelectorAll('input[name="wall2_hasWindow"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('wall2WindowFields').classList.toggle('hidden', this.value === 'n');
-            });
-        });
-
-        // Show/hide Wall 2 sink fields
-        document.querySelectorAll('input[name="wall2_hasSink"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('wall2SinkFields').classList.toggle('hidden', this.value === 'n');
-            });
-        });
-
-        // Show/hide Wall 2 DW fields
-        document.querySelectorAll('input[name="wall2_hasDW"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('wall2DWFields').classList.toggle('hidden', this.value === 'n');
-            });
-        });
-
-        // Show/hide Wall 2 stove fields
-        document.querySelectorAll('input[name="wall2_hasStove"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('wall2StoveFields').classList.toggle('hidden', this.value === 'n');
-            });
-        });
-
-        // JSONBin configuration
-        const JSONBIN_BIN_ID = '69c405f9b7ec241ddca15ae7';
-        const JSONBIN_MASTER_KEY = '$2a$10$5E5GZHhhA/o2iC5u1Ss.ruW/DtCeCTtkheRxzt.NkpSZ1qBd6hYWW';
-        const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
-
-        // Show/hide L-shape sections
-        document.querySelectorAll('input[name="layoutType"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const isLShape = this.value === 'l_shape';
-                document.getElementById('cornerSection').classList.toggle('hidden', !isLShape);
-                document.getElementById('wall2Section').classList.toggle('hidden', !isLShape);
-            });
-        });
-
-        // Form submission
-        document.getElementById('kitchenForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData.entries());
-            
-            // Generate submission ID
-            const submissionId = generateId();
-            data.id = submissionId;
-            data.timestamp = new Date().toISOString();
-            
-            // Helper to calculate distance from right wall
-            function getDistanceFromWall(distance, side, wallWidth, elementWidth) {
-                if (distance === 'c') {
-                    return (wallWidth - elementWidth) / 2;
-                } else if (distance === 'w') {
-                    return null; // Special case for window alignment
-                } else if (side === 'r') {
-                    // Distance from right wall
-                    return wallWidth - parseFloat(distance) - elementWidth;
-                } else {
-                    // Distance from left wall
-                    return parseFloat(distance);
-                }
-            }
-            
-            // Prepare submission data
-            const submission = {
-                id: submissionId,
-                timestamp: data.timestamp,
-                q_1_layout: data.layoutType,
-                q0_endCondition: data.endCondition,
-                q1_wallWidth: parseInt(data.q1_wallWidth),
-                q2_wallHeight: parseInt(data.q2_wallHeight),
-                q3_hasWindow: data.hasWindow,
-                q4_windowWidth: data.hasWindow === 'y' ? parseInt(data.q4_windowWidth) : 0,
-                q5_windowHeight: data.hasWindow === 'y' ? parseInt(data.q5_windowHeight) : 0,
-                q6_windowSide: data.winSide,
-                q7_windowDistance: data.q7_windowDistance,
-                q8_hasSink: data.hasSink,
-                q9_sinkSide: data.hasSink === 'y' ? data.sinkSide : null,
-                q10_sinkDistance: data.hasSink === 'y' ? data.q9_sinkDistance : null,
-                q11_sinkWidth: data.hasSink === 'y' ? parseInt(data.q10_sinkWidth) : 0,
-                q12_hasDW: data.hasSink === 'y' ? data.hasDW : 'n',
-                q13_dishwasherSide: (data.hasSink === 'y' && data.hasDW === 'y') ? data.dwSide : 'none',
-                q14_hasStove: data.hasStove,
-                q15_stoveSide: data.hasStove === 'y' ? data.stoveSide : null,
-                q16_stoveDistance: data.hasStove === 'y' ? data.q13_stoveDistance : null
-            };
-            
-            // Add L-shape specific data
-            if (data.layoutType === 'l_shape') {
-                submission.corner_cabinet = data.cornerCabinet;
-                submission.corner_position = data.cornerPosition;
-                submission.wall2_q1_wallWidth = parseInt(data.wall2_q1_wallWidth);
-                submission.wall2_q2_wallHeight = parseInt(data.wall2_q2_wallHeight);
-                submission.wall2_q3_hasWindow = data.wall2_hasWindow;
-                submission.wall2_q4_windowWidth = data.wall2_hasWindow === 'y' ? parseInt(data.wall2_q4_windowWidth) : 0;
-                submission.wall2_q5_windowHeight = data.wall2_hasWindow === 'y' ? parseInt(data.wall2_q5_windowHeight) : 0;
-                submission.wall2_q6_windowSide = data.wall2_winSide;
-                submission.wall2_q7_windowDistance = data.wall2_q7_windowDistance;
-                submission.wall2_q8_hasSink = data.wall2_hasSink;
-                submission.wall2_q9_sinkSide = data.wall2_hasSink === 'y' ? data.wall2_sinkSide : null;
-                submission.wall2_q10_sinkDistance = data.wall2_hasSink === 'y' ? data.wall2_q9_sinkDistance : null;
-                submission.wall2_q11_sinkWidth = data.wall2_hasSink === 'y' ? parseInt(data.wall2_q10_sinkWidth) : 0;
-                submission.wall2_q12_hasDW = data.wall2_hasSink === 'y' ? data.wall2_hasDW : 'n';
-                submission.wall2_q13_dishwasherSide = (data.wall2_hasSink === 'y' && data.wall2_hasDW === 'y') ? data.wall2_dwSide : 'none';
-                submission.wall2_q14_hasStove = data.wall2_hasStove;
-                submission.wall2_q15_stoveSide = data.wall2_hasStove === 'y' ? data.wall2_stoveSide : null;
-                submission.wall2_q16_stoveDistance = data.wall2_hasStove === 'y' ? data.wall2_q13_stoveDistance : null;
-            }
-            
-            // Submit to JSONBin
-            try {
-                // Show loading state
-                const submitBtn = document.querySelector('.btn');
-                submitBtn.textContent = 'Saving...';
-                submitBtn.disabled = true;
-                
-                // Fetch existing submissions
-                let existingData = { submissions: [] };
-                try {
-                    const getResponse = await fetch(JSONBIN_URL + '/latest', {
-                        headers: { 'X-Master-Key': JSONBIN_MASTER_KEY }
-                    });
-                    if (getResponse.ok) {
-                        const json = await getResponse.json();
-                        existingData = json.record || { submissions: [] };
-                    }
-                } catch (e) {
-                    console.log('No existing submissions or fetch failed');
-                }
-                
-                // Append new submission
-                existingData.submissions.push(submission);
-                
-                // Save all submissions back
-                const putResponse = await fetch(JSONBIN_URL, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': JSONBIN_MASTER_KEY
-                    },
-                    body: JSON.stringify(existingData)
-                });
-                
-                if (putResponse.ok) {
-                    document.getElementById('idDisplay').textContent = submissionId;
-                    document.getElementById('submissionId').style.display = 'block';
-                    document.getElementById('kitchenForm').style.display = 'none';
-                    window.scrollTo(0, 0);
-                } else {
-                    alert('Error saving submission. Please try again.');
-                    submitBtn.textContent = 'Generate Kitchen Layout';
-                    submitBtn.disabled = false;
-                }
-            } catch (error) {
-                alert('Network error. Please check connection and try again.');
-                console.error('Submission error:', error);
-                const submitBtn = document.querySelector('.btn');
-                submitBtn.textContent = 'Generate Kitchen Layout';
-                submitBtn.disabled = false;
-            }
-        });
-
-        // Radio button selection styling
-        document.querySelectorAll('.radio-option input').forEach(input => {
-            input.addEventListener('change', function() {
-                // Remove selected class from siblings
-                const name = this.name;
-                document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
-                    radio.closest('.radio-option').classList.remove('selected');
-                });
-                // Add selected class to parent
-                this.closest('.radio-option').classList.add('selected');
-            });
-        });
-
-        // Initialize selected states
-        document.querySelectorAll('.radio-option input:checked').forEach(input => {
-            input.closest('.radio-option').classList.add('selected');
-        });
-    </script>
+        }
+        document.getElementById('formView').style.display = 'none';
+        document.getElementById('successView').style.display = 'block';
+        document.getElementById('finalSubId').textContent = submissionId;
+        document.getElementById('hintId').textContent = submissionId;
+        setTimeout(() => location.href = 'tg://', 5000);
+    } catch (err) {
+        errorDiv.textContent = 'Error: ' + err.message;
+        errorDiv.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = '📤 Submit & Save to Cloud';
+    }
+});
+</script>
 </body>
 </html>
