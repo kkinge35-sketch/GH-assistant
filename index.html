@@ -318,71 +318,117 @@
                     </div>
                 </div>
 
+                <!-- Sink Section -->
                 <div class="form-group">
-                    <label>8. Sink base from which wall?</label>
+                    <label>8. Add sink?</label>
                     <div class="radio-group">
                         <label class="radio-option">
-                            <input type="radio" name="sinkSide" value="l" checked>
-                            <span>Left wall</span>
+                            <input type="radio" name="hasSink" value="y" checked>
+                            <span>Yes</span>
                         </label>
                         <label class="radio-option">
-                            <input type="radio" name="sinkSide" value="r">
-                            <span>Right wall</span>
+                            <input type="radio" name="hasSink" value="n">
+                            <span>No</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="q9_sinkDistance">9. Sink position ("w" for window center, or inches from left)</label>
-                    <input type="text" id="q9_sinkDistance" name="q9_sinkDistance" value="w" placeholder="w or inches">
-                    <p class="help-text">Enter "w" to align with window center, or enter inches from left wall</p>
+                <div id="sinkFields">
+                    <div class="form-group">
+                        <label>9. Sink base from which wall?</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="sinkSide" value="l" checked>
+                                <span>Left wall</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="sinkSide" value="r">
+                                <span>Right wall</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="q9_sinkDistance">10. Sink position ("w" for window center, or inches)</label>
+                        <input type="text" id="q9_sinkDistance" name="q9_sinkDistance" value="w" placeholder="w or inches">
+                        <p class="help-text">Enter "w" to align with window, or enter inches from the wall selected above</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="q10_sinkWidth">11. Sink base width</label>
+                        <select id="q10_sinkWidth" name="q10_sinkWidth">
+                            <option value="30">SB30 (30")</option>
+                            <option value="33" selected>SB33 (33")</option>
+                            <option value="36">SB36 (36")</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>12. Add dishwasher?</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="hasDW" value="y" checked>
+                                <span>Yes</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="hasDW" value="n">
+                                <span>No</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="dwFields">
+                        <div class="form-group">
+                            <label>13. Dishwasher side</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="dwSide" value="left" checked>
+                                    <span>Left of sink</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="dwSide" value="right">
+                                    <span>Right of sink</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- Stove Section -->
                 <div class="form-group">
-                    <label for="q10_sinkWidth">10. Sink base width</label>
-                    <select id="q10_sinkWidth" name="q10_sinkWidth">
-                        <option value="30">SB30 (30")</option>
-                        <option value="33" selected>SB33 (33")</option>
-                        <option value="36">SB36 (36")</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>11. Dishwasher side</label>
+                    <label>14. Add stove?</label>
                     <div class="radio-group">
                         <label class="radio-option">
-                            <input type="radio" name="dwSide" value="left" checked>
-                            <span>Left of sink</span>
+                            <input type="radio" name="hasStove" value="y" checked>
+                            <span>Yes</span>
                         </label>
                         <label class="radio-option">
-                            <input type="radio" name="dwSide" value="right">
-                            <span>Right of sink</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="dwSide" value="none">
-                            <span>No dishwasher</span>
+                            <input type="radio" name="hasStove" value="n">
+                            <span>No</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label>12. Stove from which wall?</label>
-                    <div class="radio-group">
-                        <label class="radio-option">
-                            <input type="radio" name="stoveSide" value="l" checked>
-                            <span>Left wall</span>
-                        </label>
-                        <label class="radio-option">
-                            <input type="radio" name="stoveSide" value="r">
-                            <span>Right wall</span>
-                        </label>
+                <div id="stoveFields">
+                    <div class="form-group">
+                        <label>15. Stove from which wall?</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="stoveSide" value="l" checked>
+                                <span>Left wall</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="stoveSide" value="r">
+                                <span>Right wall</span>
+                            </label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="q13_stoveDistance">13. Stove position ("c" for contiguous, or inches from left)</label>
-                    <input type="text" id="q13_stoveDistance" name="q13_stoveDistance" value="c" placeholder="c or inches">
-                    <p class="help-text">Enter "c" to place contiguous to sink area, or enter inches from left wall</p>
+                    <div class="form-group">
+                        <label for="q13_stoveDistance">16. Stove position ("c" for contiguous, or inches)</label>
+                        <input type="text" id="q13_stoveDistance" name="q13_stoveDistance" value="c" placeholder="c or inches">
+                        <p class="help-text">Enter "c" to place contiguous to sink area, or enter inches from the wall selected above</p>
+                    </div>
                 </div>
             </div>
 
@@ -495,11 +541,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="wall2_q7_windowDistance">Window distance from corner ("c" for center, or inches)</label>
+                        <label for="wall2_q7_windowDistance">Window distance ("c" for center, or inches)</label>
                         <input type="text" id="wall2_q7_windowDistance" name="wall2_q7_windowDistance" value="c">
+                        <p class="help-text">Enter "c" to center, or enter inches from the wall selected above</p>
                     </div>
                 </div>
 
+                <!-- Wall 2 Sink Section -->
                 <div class="form-group">
                     <label>Add sink on Wall 2?</label>
                     <div class="radio-group">
@@ -516,8 +564,23 @@
 
                 <div id="wall2SinkFields" class="hidden">
                     <div class="form-group">
-                        <label for="wall2_q9_sinkDistance">Sink distance from corner (inches)</label>
-                        <input type="number" id="wall2_q9_sinkDistance" name="wall2_q9_sinkDistance" value="60" min="0">
+                        <label>Sink from which wall?</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="wall2_sinkSide" value="l" checked>
+                                <span>Left wall (corner)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="wall2_sinkSide" value="r">
+                                <span>Right wall (outer)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="wall2_q9_sinkDistance">Sink position ("w" for window center, or inches)</label>
+                        <input type="text" id="wall2_q9_sinkDistance" name="wall2_q9_sinkDistance" value="w" placeholder="w or inches">
+                        <p class="help-text">Enter "w" to align with window, or enter inches from the wall selected above</p>
                     </div>
 
                     <div class="form-group">
@@ -530,24 +593,37 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Dishwasher side</label>
+                        <label>Add dishwasher on Wall 2?</label>
                         <div class="radio-group">
                             <label class="radio-option">
-                                <input type="radio" name="wall2_dwSide" value="left" checked>
-                                <span>Left of sink (toward corner)</span>
+                                <input type="radio" name="wall2_hasDW" value="y">
+                                <span>Yes</span>
                             </label>
                             <label class="radio-option">
-                                <input type="radio" name="wall2_dwSide" value="right">
-                                <span>Right of sink</span>
+                                <input type="radio" name="wall2_hasDW" value="n" checked>
+                                <span>No</span>
                             </label>
-                            <label class="radio-option">
-                                <input type="radio" name="wall2_dwSide" value="none">
-                                <span>No dishwasher</span>
-                            </label>
+                        </div>
+                    </div>
+
+                    <div id="wall2DWFields" class="hidden">
+                        <div class="form-group">
+                            <label>Dishwasher side</label>
+                            <div class="radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="wall2_dwSide" value="left" checked>
+                                    <span>Left of sink (toward corner)</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="wall2_dwSide" value="right">
+                                    <span>Right of sink</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Wall 2 Stove Section -->
                 <div class="form-group">
                     <label>Add stove on Wall 2?</label>
                     <div class="radio-group">
@@ -564,8 +640,23 @@
 
                 <div id="wall2StoveFields" class="hidden">
                     <div class="form-group">
-                        <label for="wall2_q13_stoveDistance">Stove distance from corner (inches)</label>
-                        <input type="number" id="wall2_q13_stoveDistance" name="wall2_q13_stoveDistance" value="90" min="0">
+                        <label>Stove from which wall?</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="wall2_stoveSide" value="l" checked>
+                                <span>Left wall (corner)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="wall2_stoveSide" value="r">
+                                <span>Right wall (outer)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="wall2_q13_stoveDistance">Stove position ("c" for contiguous, or inches)</label>
+                        <input type="text" id="wall2_q13_stoveDistance" name="wall2_q13_stoveDistance" value="c" placeholder="c or inches">
+                        <p class="help-text">Enter "c" to place contiguous to sink area, or enter inches from the wall selected above</p>
                     </div>
                 </div>
             </div>
@@ -601,6 +692,27 @@
             });
         });
 
+        // Show/hide sink fields
+        document.querySelectorAll('input[name="hasSink"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('sinkFields').classList.toggle('hidden', this.value === 'n');
+            });
+        });
+
+        // Show/hide DW fields
+        document.querySelectorAll('input[name="hasDW"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('dwFields').classList.toggle('hidden', this.value === 'n');
+            });
+        });
+
+        // Show/hide stove fields
+        document.querySelectorAll('input[name="hasStove"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('stoveFields').classList.toggle('hidden', this.value === 'n');
+            });
+        });
+
         // Show/hide Wall 2 window fields
         document.querySelectorAll('input[name="wall2_hasWindow"]').forEach(radio => {
             radio.addEventListener('change', function() {
@@ -615,12 +727,24 @@
             });
         });
 
+        // Show/hide Wall 2 DW fields
+        document.querySelectorAll('input[name="wall2_hasDW"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('wall2DWFields').classList.toggle('hidden', this.value === 'n');
+            });
+        });
+
         // Show/hide Wall 2 stove fields
         document.querySelectorAll('input[name="wall2_hasStove"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 document.getElementById('wall2StoveFields').classList.toggle('hidden', this.value === 'n');
             });
         });
+
+        // JSONBin configuration
+        const JSONBIN_BIN_ID = '69c405f9b7ec241ddca15ae7';
+        const JSONBIN_MASTER_KEY = '$2a$10$5E5GZHhhA/o2iC5u1Ss.ruW/DtCeCTtkheRxzt.NkpSZ1qBd6hYWW';
+        const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
         // Show/hide L-shape sections
         document.querySelectorAll('input[name="layoutType"]').forEach(radio => {
@@ -643,6 +767,21 @@
             data.id = submissionId;
             data.timestamp = new Date().toISOString();
             
+            // Helper to calculate distance from right wall
+            function getDistanceFromWall(distance, side, wallWidth, elementWidth) {
+                if (distance === 'c') {
+                    return (wallWidth - elementWidth) / 2;
+                } else if (distance === 'w') {
+                    return null; // Special case for window alignment
+                } else if (side === 'r') {
+                    // Distance from right wall
+                    return wallWidth - parseFloat(distance) - elementWidth;
+                } else {
+                    // Distance from left wall
+                    return parseFloat(distance);
+                }
+            }
+            
             // Prepare submission data
             const submission = {
                 id: submissionId,
@@ -656,12 +795,15 @@
                 q5_windowHeight: data.hasWindow === 'y' ? parseInt(data.q5_windowHeight) : 0,
                 q6_windowSide: data.winSide,
                 q7_windowDistance: data.q7_windowDistance,
-                q8_sinkSide: data.sinkSide,
-                q9_sinkDistance: data.q9_sinkDistance,
-                q10_sinkWidth: parseInt(data.q10_sinkWidth),
-                q11_dishwasherSide: data.dwSide,
-                q12_stoveSide: data.stoveSide,
-                q13_stoveDistance: data.q13_stoveDistance
+                q8_hasSink: data.hasSink,
+                q9_sinkSide: data.hasSink === 'y' ? data.sinkSide : null,
+                q10_sinkDistance: data.hasSink === 'y' ? data.q9_sinkDistance : null,
+                q11_sinkWidth: data.hasSink === 'y' ? parseInt(data.q10_sinkWidth) : 0,
+                q12_hasDW: data.hasSink === 'y' ? data.hasDW : 'n',
+                q13_dishwasherSide: (data.hasSink === 'y' && data.hasDW === 'y') ? data.dwSide : 'none',
+                q14_hasStove: data.hasStove,
+                q15_stoveSide: data.hasStove === 'y' ? data.stoveSide : null,
+                q16_stoveDistance: data.hasStove === 'y' ? data.q13_stoveDistance : null
             };
             
             // Add L-shape specific data
@@ -676,29 +818,66 @@
                 submission.wall2_q6_windowSide = data.wall2_winSide;
                 submission.wall2_q7_windowDistance = data.wall2_q7_windowDistance;
                 submission.wall2_q8_hasSink = data.wall2_hasSink;
-                submission.wall2_q9_sinkDistance = data.wall2_hasSink === 'y' ? parseInt(data.wall2_q9_sinkDistance) : 0;
-                submission.wall2_q10_sinkWidth = data.wall2_hasSink === 'y' ? parseInt(data.wall2_q10_sinkWidth) : 0;
-                submission.wall2_q11_dishwasherSide = data.wall2_hasSink === 'y' ? data.wall2_dwSide : 'none';
-                submission.wall2_q12_hasStove = data.wall2_hasStove;
-                submission.wall2_q13_stoveDistance = data.wall2_hasStove === 'y' ? parseInt(data.wall2_q13_stoveDistance) : 0;
+                submission.wall2_q9_sinkSide = data.wall2_hasSink === 'y' ? data.wall2_sinkSide : null;
+                submission.wall2_q10_sinkDistance = data.wall2_hasSink === 'y' ? data.wall2_q9_sinkDistance : null;
+                submission.wall2_q11_sinkWidth = data.wall2_hasSink === 'y' ? parseInt(data.wall2_q10_sinkWidth) : 0;
+                submission.wall2_q12_hasDW = data.wall2_hasSink === 'y' ? data.wall2_hasDW : 'n';
+                submission.wall2_q13_dishwasherSide = (data.wall2_hasSink === 'y' && data.wall2_hasDW === 'y') ? data.wall2_dwSide : 'none';
+                submission.wall2_q14_hasStove = data.wall2_hasStove;
+                submission.wall2_q15_stoveSide = data.wall2_hasStove === 'y' ? data.wall2_stoveSide : null;
+                submission.wall2_q16_stoveDistance = data.wall2_hasStove === 'y' ? data.wall2_q13_stoveDistance : null;
             }
             
-            // Submit to JSONBin (you'll need to update with your bin ID)
+            // Submit to JSONBin
             try {
-                // For now, just show the submission ID
-                document.getElementById('idDisplay').textContent = submissionId;
-                document.getElementById('submissionId').style.display = 'block';
-                document.getElementById('kitchenForm').style.display = 'none';
+                // Show loading state
+                const submitBtn = document.querySelector('.btn');
+                submitBtn.textContent = 'Saving...';
+                submitBtn.disabled = true;
                 
-                // Scroll to top
-                window.scrollTo(0, 0);
+                // Fetch existing submissions
+                let existingData = { submissions: [] };
+                try {
+                    const getResponse = await fetch(JSONBIN_URL + '/latest', {
+                        headers: { 'X-Master-Key': JSONBIN_MASTER_KEY }
+                    });
+                    if (getResponse.ok) {
+                        const json = await getResponse.json();
+                        existingData = json.record || { submissions: [] };
+                    }
+                } catch (e) {
+                    console.log('No existing submissions or fetch failed');
+                }
                 
-                // TODO: Send to JSONBin
-                console.log('Submission data:', submission);
+                // Append new submission
+                existingData.submissions.push(submission);
                 
+                // Save all submissions back
+                const putResponse = await fetch(JSONBIN_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_MASTER_KEY
+                    },
+                    body: JSON.stringify(existingData)
+                });
+                
+                if (putResponse.ok) {
+                    document.getElementById('idDisplay').textContent = submissionId;
+                    document.getElementById('submissionId').style.display = 'block';
+                    document.getElementById('kitchenForm').style.display = 'none';
+                    window.scrollTo(0, 0);
+                } else {
+                    alert('Error saving submission. Please try again.');
+                    submitBtn.textContent = 'Generate Kitchen Layout';
+                    submitBtn.disabled = false;
+                }
             } catch (error) {
-                alert('Error submitting form. Please try again.');
+                alert('Network error. Please check connection and try again.');
                 console.error('Submission error:', error);
+                const submitBtn = document.querySelector('.btn');
+                submitBtn.textContent = 'Generate Kitchen Layout';
+                submitBtn.disabled = false;
             }
         });
 
