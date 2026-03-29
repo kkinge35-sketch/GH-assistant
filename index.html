@@ -7,7 +7,7 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: system-ui, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; min-height: 100vh; }
-.container { max-width: 750px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+.container { max-width: 800px; margin: 0 auto; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
 h1 { color: #333; font-size: 24px; margin-bottom: 5px; }
 .subtitle { color: #666; font-size: 14px; margin-bottom: 15px; }
 .validation-error { background: #fee2e2; border: 2px solid #ef4444; color: #991b1b; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; display: none; }
@@ -16,8 +16,9 @@ h1 { color: #333; font-size: 24px; margin-bottom: 5px; }
 .id-box { background: #d1fae5; border: 2px solid #10b981; color: #065f46; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; }
 .id-box strong { font-size: 24px; display: block; margin: 5px 0; }
 .section { background: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 2px solid #ddd; }
+.section.disabled { opacity: 0.5; pointer-events: none; background: #e5e5e5; }
 .section-title { color: #667eea; font-weight: bold; margin-bottom: 10px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
-.section-title .num { background: #667eea; color: white; font-size: 12px; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.section-title .num { background: #667eea; color: white; font-size: 12px; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .section-title .badge { background: #667eea; color: white; font-size: 10px; padding: 2px 8px; border-radius: 12px; margin-left: auto; }
 .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
@@ -51,7 +52,60 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 .layout-option .icon { font-size: 32px; margin-bottom: 8px; }
 .layout-option .name { font-weight: 600; font-size: 14px; }
 .layout-option .desc { font-size: 11px; color: #666; margin-top: 4px; }
+
+/* Wall 2 Visual Indicator */
+.wall2-indicator { 
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+    color: white; 
+    padding: 12px 16px; 
+    border-radius: 8px; 
+    margin-bottom: 15px; 
+    font-weight: bold; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.wall2-indicator .arrow { 
+    font-size: 24px; 
+    animation: pulse 2s infinite;
+}
+@keyframes pulse { 
+    0%, 100% { transform: scale(1); } 
+    50% { transform: scale(1.2); } 
+}
+.wall2-indicator.left .arrow { transform: rotate(180deg); }
+.wall2-indicator.left .arrow { animation: pulse-left 2s infinite; }
+@keyframes pulse-left { 
+    0%, 100% { transform: rotate(180deg) scale(1); } 
+    50% { transform: rotate(180deg) scale(1.2); } 
+}
+
+/* Wall selector for appliances */
+.wall-selector { 
+    background: #e0e7ff; 
+    border: 2px solid #6366f1; 
+    border-radius: 8px; 
+    padding: 10px; 
+    margin-bottom: 12px; 
+}
+.wall-selector label { 
+    color: #4338ca; 
+    font-weight: 700; 
+}
+.wall-badge { 
+    display: inline-block; 
+    background: #6366f1; 
+    color: white; 
+    padding: 2px 8px; 
+    border-radius: 4px; 
+    font-size: 11px; 
+    font-weight: bold; 
+    margin-left: 8px; 
+}
 </style>
+<base target="_blank">
 </head>
 <body>
 <div class="container">
@@ -98,7 +152,7 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 <div class="section">
 <div class="section-title"><span class="num">1</span>Wall End Conditions</div>
 <div class="form-group">
-<label>How do the ends of Wall 1 terminate?</label>
+<label>How do the ends of the wall(s) terminate?</label>
 <div class="radio-group">
 <label class="radio-option selected">
 <input type="radio" name="wallConfig" value="both" checked onchange="updateWallConfig()">
@@ -106,24 +160,24 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 </label>
 <label class="radio-option">
 <input type="radio" name="wallConfig" value="left" onchange="updateWallConfig()">
-<span><strong>Open left, Wall right</strong> - Right corner</span>
+<span><strong>Open left, Wall right</strong> - Right side closed</span>
 </label>
 <label class="radio-option">
 <input type="radio" name="wallConfig" value="right" onchange="updateWallConfig()">
-<span><strong>Wall left, Open right</strong> - Left corner</span>
+<span><strong>Wall left, Open right</strong> - Left side closed</span>
 </label>
 <label class="radio-option">
 <input type="radio" name="wallConfig" value="walled" onchange="updateWallConfig()">
 <span><strong>Wall to wall</strong> - Enclosed on both sides</span>
 </label>
 </div>
-<div class="help-text">This determines end panel placement and gap calculations</div>
+<div class="help-text">Applies to ends of Wall 1 and Wall 2 (for L-Shape)</div>
 </div>
 </div>
 
-<!-- 2. WALL DIMENSIONS -->
+<!-- 2. WALL 1 DIMENSIONS -->
 <div class="section">
-<div class="section-title"><span class="num">2</span>Wall 1 (Main Wall) <span class="badge" id="wall2badge" style="display:none;">Wall 2 →</span></div>
+<div class="section-title"><span class="num">2</span>Wall 1 (Main Wall)</div>
 <div class="row">
 <div class="form-group">
 <label>Wall width (inches)</label>
@@ -140,6 +194,10 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 
 <!-- WALL 2 (for L-Shape) -->
 <div class="section" id="wall2section" style="display:none;">
+<div class="wall2-indicator" id="wall2Indicator">
+<span class="arrow">➡️</span>
+<span>Wall 2 connects to <strong id="wall2Connection">RIGHT</strong> side of Wall 1</span>
+</div>
 <div class="section-title"><span class="num">2b</span>Wall 2 (Return Wall)</div>
 <div class="row">
 <div class="form-group">
@@ -148,11 +206,12 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 <div class="default">Default: 84"</div>
 </div>
 <div class="form-group">
-<label>Wall 2 position</label>
-<select id="wall2Position">
-<option value="left">Extends to Left</option>
-<option value="right" selected>Extends to Right</option>
+<label>Wall 2 extends to:</label>
+<select id="wall2Position" onchange="updateWall2Indicator()">
+<option value="left">⬅️ LEFT of Wall 1</option>
+<option value="right" selected>➡️ RIGHT of Wall 1</option>
 </select>
+<div class="help-text">Change direction to update diagram above</div>
 </div>
 </div>
 </div>
@@ -168,6 +227,14 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 </select>
 </div>
 <div id="windowFields" class="conditional show">
+<!-- Wall selector for L-Shape -->
+<div class="wall-selector" id="windowWallSelector" style="display:none;">
+<label>Which wall is the window on? <span class="wall-badge">Required</span></label>
+<select id="windowWall" onchange="updateWallOptions('window')">
+<option value="1" selected>Wall 1 (Main Wall)</option>
+<option value="2">Wall 2 (Return Wall)</option>
+</select>
+</div>
 <div class="row">
 <div class="form-group">
 <label>Window width (inches)</label>
@@ -208,6 +275,14 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 </select>
 </div>
 <div id="sinkFields" class="conditional show">
+<!-- Wall selector for L-Shape -->
+<div class="wall-selector" id="sinkWallSelector" style="display:none;">
+<label>Which wall is the sink on? <span class="wall-badge">Required</span></label>
+<select id="sinkWall" onchange="updateWallOptions('sink'); validateSpacing();">
+<option value="1" selected>Wall 1 (Main Wall)</option>
+<option value="2">Wall 2 (Return Wall)</option>
+</select>
+</div>
 <div class="row">
 <div class="form-group">
 <label>Sink base from which wall?</label>
@@ -219,7 +294,7 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 <div class="form-group">
 <label>Sink position</label>
 <input type="text" id="sinkDistance" value="w">
-<div class="help-text">Enter "w" to align with window, or enter inches from the wall selected above</div>
+<div class="help-text">Enter "w" to align with window, or enter inches</div>
 </div>
 </div>
 <div class="form-group">
@@ -241,6 +316,14 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 </select>
 </div>
 <div id="dishwasherFields" class="conditional">
+<!-- Wall selector for L-Shape -->
+<div class="wall-selector" id="dishwasherWallSelector" style="display:none;">
+<label>Which wall is the dishwasher on? <span class="wall-badge">Required</span></label>
+<select id="dishwasherWall">
+<option value="1" selected>Wall 1 (Main Wall)</option>
+<option value="2">Wall 2 (Return Wall)</option>
+</select>
+</div>
 <div class="form-group">
 <label>Dishwasher side</label>
 <select id="dishwasherSide">
@@ -266,6 +349,14 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 </select>
 </div>
 <div id="stoveFields" class="conditional show">
+<!-- Wall selector for L-Shape -->
+<div class="wall-selector" id="stoveWallSelector" style="display:none;">
+<label>Which wall is the stove on? <span class="wall-badge">Required</span></label>
+<select id="stoveWall" onchange="updateWallOptions('stove'); validateSpacing();">
+<option value="1" selected>Wall 1 (Main Wall)</option>
+<option value="2">Wall 2 (Return Wall)</option>
+</select>
+</div>
 <div class="row">
 <div class="form-group">
 <label>Stove from which wall?</label>
@@ -277,13 +368,14 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 <div class="form-group">
 <label>Stove position</label>
 <input type="text" id="stoveDistance" value="40">
-<div class="help-text">Enter "c" to place contiguous to sink area, or enter inches from the wall selected above</div>
+<div class="help-text">Enter "c" for contiguous to sink, or enter inches</div>
 </div>
 </div>
 <div class="spacing-info" id="spacingRules">
 💡 <strong>Spacing Rules:</strong><br>
 • Sink + Stove only: minimum 30" gap required<br>
-• With Dishwasher: minimum 55" gap required
+• With Dishwasher: minimum 55" gap required<br>
+• <em>Note: Spacing only validated when sink & stove are on same wall</em>
 </div>
 </div>
 </div>
@@ -316,25 +408,50 @@ const CONFIG = {
 
 const isConfigured = CONFIG.BIN_ID !== 'YOUR_BIN_ID_HERE';
 
+// Layout selection
 function selectLayout(type) {
     document.querySelectorAll('.layout-option').forEach(opt => opt.classList.remove('selected'));
     event.currentTarget.classList.add('selected');
     document.getElementById('layoutType').value = type;
-    if (type === 'lshape') {
-        document.getElementById('wall2section').style.display = 'block';
-        document.getElementById('wall2badge').style.display = 'inline';
+
+    // Show/hide Wall 2 section
+    const isLShape = type === 'lshape';
+    document.getElementById('wall2section').style.display = isLShape ? 'block' : 'none';
+
+    // Show/hide wall selectors for appliances
+    document.getElementById('windowWallSelector').style.display = isLShape ? 'block' : 'none';
+    document.getElementById('sinkWallSelector').style.display = isLShape ? 'block' : 'none';
+    document.getElementById('dishwasherWallSelector').style.display = isLShape ? 'block' : 'none';
+    document.getElementById('stoveWallSelector').style.display = isLShape ? 'block' : 'none';
+
+    updateWall2Indicator();
+}
+
+// Update Wall 2 visual indicator
+function updateWall2Indicator() {
+    const position = document.getElementById('wall2Position').value;
+    const indicator = document.getElementById('wall2Indicator');
+    const connectionText = document.getElementById('wall2Connection');
+
+    if (position === 'left') {
+        indicator.classList.add('left');
+        indicator.querySelector('.arrow').textContent = '⬅️';
+        connectionText.textContent = 'LEFT';
     } else {
-        document.getElementById('wall2section').style.display = 'none';
-        document.getElementById('wall2badge').style.display = 'none';
+        indicator.classList.remove('left');
+        indicator.querySelector('.arrow').textContent = '➡️';
+        connectionText.textContent = 'RIGHT';
     }
 }
 
+// Update wall config styling
 function updateWallConfig() {
     document.querySelectorAll('input[name="wallConfig"]').forEach(radio => {
         radio.closest('.radio-option').classList.toggle('selected', radio.checked);
     });
 }
 
+// Toggle functions
 function toggleWindow() {
     document.getElementById('windowFields').classList.toggle('show', document.getElementById('hasWindow').value === 'y');
 }
@@ -358,43 +475,93 @@ function toggleStove() {
     validateSpacing();
 }
 
-function getPosition(side, distanceInput, width) {
-    const wallWidth = parseInt(document.getElementById('wallWidth').value) || 120;
+// Update wall options labels based on selected wall
+function updateWallOptions(appliance) {
+    const isLShape = document.getElementById('layoutType').value === 'lshape';
+    if (!isLShape) return;
+
+    // Update side labels based on which wall is selected
+    // This is optional enhancement - can customize per wall if needed
+}
+
+// Get which wall an appliance is on
+function getApplianceWall(appliance) {
+    const isLShape = document.getElementById('layoutType').value === 'lshape';
+    if (!isLShape) return 1;
+
+    const wallSelect = document.getElementById(appliance + 'Wall');
+    return wallSelect ? parseInt(wallSelect.value) : 1;
+}
+
+// Calculate position on a specific wall
+function getPositionOnWall(wallNum, side, distanceInput, width) {
+    const wallWidth = wallNum === 2 
+        ? (parseInt(document.getElementById('wall2Width').value) || 84)
+        : (parseInt(document.getElementById('wallWidth').value) || 120);
+
     const distance = distanceInput.toLowerCase().trim();
+
     if (distance === 'c') return wallWidth / 2;
     if (distance === 'w') {
+        // Window alignment - only works if on same wall
+        const windowWall = getApplianceWall('window');
+        if (windowWall !== wallNum) return wallWidth / 2; // Default to center if different wall
+
         const windowSide = document.getElementById('windowSide').value;
         const windowDist = document.getElementById('windowDistance').value.toLowerCase();
         if (windowDist === 'c') return wallWidth / 2;
         return windowSide === 'L' ? parseInt(windowDist) || 0 : wallWidth - (parseInt(windowDist) || 0);
     }
+
     const dist = parseInt(distance) || 0;
     return side === 'L' ? dist : wallWidth - dist;
 }
 
+// Validate spacing (only if sink and stove are on same wall)
 function validateSpacing() {
     const hasSink = document.getElementById('hasSink').value === 'y';
     const hasStove = document.getElementById('hasStove').value === 'y';
     const hasDishwasher = document.getElementById('hasDishwasher').value === 'y';
     const errorDiv = document.getElementById('validationError');
+
     errorDiv.classList.remove('show');
+    errorDiv.textContent = '';
+
     if (!hasSink || !hasStove) return true;
-    
+
+    // Check if sink and stove are on same wall
+    const sinkWall = getApplianceWall('sink');
+    const stoveWall = getApplianceWall('stove');
+
+    if (sinkWall !== stoveWall) {
+        // Different walls - no spacing validation needed (corner configuration)
+        return true;
+    }
+
+    // Same wall - validate spacing
     const sinkWidth = parseInt(document.getElementById('sinkWidth').value) || 33;
-    const sinkPos = getPosition(document.getElementById('sinkSide').value, document.getElementById('sinkDistance').value, sinkWidth);
-    const stovePos = getPosition(document.getElementById('stoveSide').value, document.getElementById('stoveDistance').value, 30);
-    const gap = Math.abs(sinkPos - stovePos) - (sinkWidth/2) - 15;
+    const stoveWidth = 30;
+
+    const sinkPos = getPositionOnWall(sinkWall, document.getElementById('sinkSide').value, document.getElementById('sinkDistance').value, sinkWidth);
+    const stovePos = getPositionOnWall(stoveWall, document.getElementById('stoveSide').value, document.getElementById('stoveDistance').value, stoveWidth);
+
+    const gap = Math.abs(sinkPos - stovePos) - (sinkWidth/2) - (stoveWidth/2);
     const minGap = hasDishwasher ? 55 : 30;
-    
+
     if (gap < minGap) {
-        errorDiv.innerHTML = `<strong>⚠️ Spacing Error:</strong> Gap between sink and stove is ${Math.floor(gap)}"<br>Minimum required: ${minGap}" ${hasDishwasher ? '(dishwasher requires extra space)' : ''}<br>Please adjust positions.`;
+        const wallName = sinkWall === 1 ? 'Wall 1' : 'Wall 2';
+        errorDiv.innerHTML = `<strong>⚠️ Spacing Error on ${wallName}:</strong> Gap between sink and stove is ${Math.floor(gap)}"<br>
+        Minimum required: ${minGap}" ${hasDishwasher ? '(dishwasher requires extra space)' : ''}<br>
+        Please adjust positions or move appliances to different walls.`;
         errorDiv.classList.add('show');
         return false;
     }
+
     return true;
 }
 
-['sinkDistance', 'stoveDistance', 'sinkSide', 'stoveSide', 'sinkWidth', 'hasDishwasher'].forEach(id => {
+// Real-time validation
+['sinkDistance', 'stoveDistance', 'sinkSide', 'stoveSide', 'sinkWidth', 'hasDishwasher', 'sinkWall', 'stoveWall'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
         el.addEventListener('change', validateSpacing);
@@ -402,44 +569,58 @@ function validateSpacing() {
     }
 });
 
+// Form submission
 document.getElementById('layoutForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+
     if (!validateSpacing()) return;
-    
+
     const btn = document.getElementById('submitBtn');
     const errorDiv = document.getElementById('errorMsg');
+
     btn.disabled = true;
     btn.textContent = 'Saving...';
     errorDiv.style.display = 'none';
-    
+
+    const layoutType = document.getElementById('layoutType').value;
     const wallConfig = document.querySelector('input[name="wallConfig"]:checked').value;
     const hasWindow = document.getElementById('hasWindow').value;
     const hasSink = document.getElementById('hasSink').value;
     const hasDishwasher = document.getElementById('hasDishwasher').value;
     const hasStove = document.getElementById('hasStove').value;
+    const isLShape = layoutType === 'lshape';
+
     const submissionId = 'KL' + Date.now().toString(36).toUpperCase();
-    
+
     const formData = {
         id: submissionId,
         timestamp: new Date().toISOString(),
         layout: {
-            type: document.getElementById('layoutType').value,
-            typeName: {'single': 'Single Wall', 'lshape': 'L-Shape'}[document.getElementById('layoutType').value]
+            type: layoutType,
+            typeName: {'single': 'Single Wall', 'lshape': 'L-Shape'}[layoutType]
         },
         wallConfig: {
             type: wallConfig,
-            description: {'both': 'Open both sides', 'left': 'Open left, Wall right', 'right': 'Wall left, Open right', 'walled': 'Wall to wall'}[wallConfig]
+            description: {
+                'both': 'Open both sides',
+                'left': 'Open left, Wall right',
+                'right': 'Wall left, Open right',
+                'walled': 'Wall to wall'
+            }[wallConfig],
+            appliesTo: isLShape ? 'Both Wall 1 and Wall 2' : 'Wall 1'
         },
         wall1: {
             width: parseInt(document.getElementById('wallWidth').value),
             height: parseInt(document.getElementById('wallHeight').value)
         },
-        wall2: document.getElementById('layoutType').value === 'lshape' ? {
+        wall2: isLShape ? {
             width: parseInt(document.getElementById('wall2Width').value) || 84,
-            position: document.getElementById('wall2Position').value
+            position: document.getElementById('wall2Position').value,
+            connection: document.getElementById('wall2Position').value === 'left' ? 'Extends to LEFT of Wall 1' : 'Extends to RIGHT of Wall 1'
         } : null,
         window: {
             hasWindow: hasWindow,
+            wall: isLShape ? parseInt(document.getElementById('windowWall').value) : 1,
             width: hasWindow === 'y' ? parseInt(document.getElementById('windowWidth').value) : null,
             height: hasWindow === 'y' ? parseInt(document.getElementById('windowHeight').value) : null,
             side: hasWindow === 'y' ? document.getElementById('windowSide').value : null,
@@ -447,25 +628,31 @@ document.getElementById('layoutForm').addEventListener('submit', async (e) => {
         },
         sink: {
             hasSink: hasSink,
+            wall: isLShape && hasSink === 'y' ? parseInt(document.getElementById('sinkWall').value) : 1,
             side: hasSink === 'y' ? document.getElementById('sinkSide').value : null,
             distance: hasSink === 'y' ? document.getElementById('sinkDistance').value : null,
             width: hasSink === 'y' ? parseInt(document.getElementById('sinkWidth').value) : null
         },
         dishwasher: {
             hasDishwasher: hasDishwasher,
+            wall: isLShape && hasDishwasher === 'y' ? parseInt(document.getElementById('dishwasherWall').value) : 1,
             side: hasDishwasher === 'y' ? document.getElementById('dishwasherSide').value : null
         },
         stove: {
             hasStove: hasStove,
+            wall: isLShape && hasStove === 'y' ? parseInt(document.getElementById('stoveWall').value) : 1,
             side: hasStove === 'y' ? document.getElementById('stoveSide').value : null,
             distance: hasStove === 'y' ? document.getElementById('stoveDistance').value : null
         },
         validation: {
             spacingChecked: true,
-            minGapRequired: hasDishwasher === 'y' && hasSink === 'y' && hasStove === 'y' ? 55 : (hasSink === 'y' && hasStove === 'y' ? 30 : 0)
+            sinkAndStoveSameWall: hasSink === 'y' && hasStove === 'y' ? 
+                (getApplianceWall('sink') === getApplianceWall('stove')) : null,
+            minGapRequired: hasDishwasher === 'y' && hasSink === 'y' && hasStove === 'y' ? 55 : 
+                (hasSink === 'y' && hasStove === 'y' ? 30 : 0)
         }
     };
-    
+
     try {
         if (isConfigured) {
             const getRes = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}/latest`, {
@@ -476,14 +663,19 @@ document.getElementById('layoutForm').addEventListener('submit', async (e) => {
             submissions.push(formData);
             await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.BIN_ID}`, {
                 method: 'PUT',
-                headers: {'Content-Type': 'application/json', 'X-Master-Key': CONFIG.API_KEY},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': CONFIG.API_KEY
+                },
                 body: JSON.stringify({ submissions })
             });
         }
+
         document.getElementById('formView').style.display = 'none';
         document.getElementById('successView').style.display = 'block';
         document.getElementById('finalSubId').textContent = submissionId;
         document.getElementById('hintId').textContent = submissionId;
+
         setTimeout(() => location.href = 'tg://', 5000);
     } catch (err) {
         errorDiv.textContent = 'Error: ' + err.message;
