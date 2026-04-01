@@ -591,7 +591,8 @@ function validateSpacing() {
     const sinkPos = getPositionOnWall(sinkWall, document.getElementById('sinkSide').value, document.getElementById('sinkDistance').value, sinkWidth);
     const stovePos = getPositionOnWall(stoveWall, document.getElementById('stoveSide').value, document.getElementById('stoveDistance').value, stoveWidth);
 
-    const gap = Math.abs(sinkPos - stovePos) - (sinkWidth/2) - (stoveWidth/2);
+    // Space is measured from middle of sink to middle of stove (center-to-center)
+    const gap = Math.abs(sinkPos - stovePos);
     
     // Check if dishwasher is between sink and stove
     const dishwasherBetween = isDishwasherBetweenSinkAndStove();
@@ -600,7 +601,7 @@ function validateSpacing() {
     if (gap < minGap) {
         const wallName = sinkWall === 1 ? 'Wall 1' : 'Wall 2';
         const reasonText = dishwasherBetween ? '(dishwasher between sink and stove requires extra space)' : '';
-        errorDiv.innerHTML = `<strong>⚠️ Spacing Error on ${wallName}:</strong> Gap between sink and stove is ${Math.floor(gap)}"<br>
+        errorDiv.innerHTML = `<strong>⚠️ Spacing Error on ${wallName}:</strong> Space from middle of sink to middle of stove is ${Math.floor(gap)}"<br>
         Minimum required: ${minGap}" ${reasonText}<br>
         Please adjust positions or move appliances to different walls.`;
         errorDiv.classList.add('show');
