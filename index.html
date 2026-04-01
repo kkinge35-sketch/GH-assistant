@@ -106,6 +106,7 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 }
 </style>
 <base target="_blank">
+<base target="_blank">
 </head>
 <body>
 <div class="container">
@@ -319,21 +320,21 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 <!-- Wall selector for L-Shape -->
 <div class="wall-selector" id="dishwasherWallSelector" style="display:none;">
 <label>Which wall is the dishwasher on? <span class="wall-badge">Required</span></label>
-<select id="dishwasherWall">
+<select id="dishwasherWall" onchange="validateSpacing()">
 <option value="1" selected>Wall 1 (Main Wall)</option>
 <option value="2">Wall 2 (Return Wall)</option>
 </select>
 </div>
 <div class="form-group">
 <label>Dishwasher side</label>
-<select id="dishwasherSide">
+<select id="dishwasherSide" onchange="validateSpacing()">
 <option value="L" selected>Left of sink</option>
 <option value="R">Right of sink</option>
 </select>
 <div class="default">Default: Left of sink</div>
 </div>
 <div class="spacing-info warning">
-⚠️ <strong>Important:</strong> Adding dishwasher requires minimum 55" gap between sink and stove (vs 30" without dishwasher)
+⚠️ <strong>Important:</strong> When dishwasher is between sink and stove on the same wall, minimum 58" gap is required (vs 35" without dishwasher between them)
 </div>
 </div>
 </div>
@@ -373,8 +374,8 @@ input:focus, select:focus { border-color: #667eea; outline: none; box-shadow: 0 
 </div>
 <div class="spacing-info" id="spacingRules">
 💡 <strong>Spacing Rules:</strong><br>
-• Sink + Stove only: minimum 30" gap required<br>
-• With Dishwasher: minimum 55" gap required<br>
+• Sink + Stove on same wall (no dishwasher between): minimum 35" gap required<br>
+• With dishwasher between sink and stove: minimum 58" gap required<br>
 • <em>Note: Spacing only validated when sink & stove are on same wall</em>
 </div>
 </div>
@@ -517,11 +518,56 @@ function getPositionOnWall(wallNum, side, distanceInput, width) {
     return side === 'L' ? dist : wallWidth - dist;
 }
 
+// Check if dishwasher is positioned between sink and stove
+function isDishwasherBetweenSinkAndStove() {
+    const hasDishwasher = document.getElementById('hasDishwasher').value === 'y';
+    if (!hasDishwasher) return false;
+
+    // Check if all three are on the same wall
+    const sinkWall = getApplianceWall('sink');
+    const stoveWall = getApplianceWall('stove');
+    const dishwasherWall = getApplianceWall('dishwasher');
+
+    if (sinkWall !== stoveWall || sinkWall !== dishwasherWall) {
+        return false; // Not all on same wall
+    }
+
+    // Get positions
+    const sinkWidth = parseInt(document.getElementById('sinkWidth').value) || 33;
+    const sinkPos = getPositionOnWall(sinkWall, document.getElementById('sinkSide').value, document.getElementById('sinkDistance').value, sinkWidth);
+    const stoveWidth = 30;
+    const stovePos = getPositionOnWall(stoveWall, document.getElementById('stoveSide').value, document.getElementById('stoveDistance').value, stoveWidth);
+    
+    // Dishwasher is 24" wide, positioned relative to sink
+    const dishwasherSide = document.getElementById('dishwasherSide').value;
+    const dishwasherWidth = 24;
+    
+    // Calculate dishwasher position (center point)
+    let dishwasherPos;
+    if (dishwasherSide === 'L') {
+        // Dishwasher is to the left of sink
+        dishwasherPos = sinkPos - (sinkWidth / 2) - (dishwasherWidth / 2);
+    } else {
+        // Dishwasher is to the right of sink
+        dishwasherPos = sinkPos + (sinkWidth / 2) + (dishwasherWidth / 2);
+    }
+
+    // Check if dishwasher is between sink and stove
+    const sinkEdge = sinkPos;
+    const stoveEdge = stovePos;
+    
+    // Determine the range between sink and stove
+    const minPos = Math.min(sinkEdge, stoveEdge);
+    const maxPos = Math.max(sinkEdge, stoveEdge);
+    
+    // Check if dishwasher center is between sink and stove positions
+    return dishwasherPos > minPos && dishwasherPos < maxPos;
+}
+
 // Validate spacing (only if sink and stove are on same wall)
 function validateSpacing() {
     const hasSink = document.getElementById('hasSink').value === 'y';
     const hasStove = document.getElementById('hasStove').value === 'y';
-    const hasDishwasher = document.getElementById('hasDishwasher').value === 'y';
     const errorDiv = document.getElementById('validationError');
 
     errorDiv.classList.remove('show');
@@ -546,12 +592,16 @@ function validateSpacing() {
     const stovePos = getPositionOnWall(stoveWall, document.getElementById('stoveSide').value, document.getElementById('stoveDistance').value, stoveWidth);
 
     const gap = Math.abs(sinkPos - stovePos) - (sinkWidth/2) - (stoveWidth/2);
-    const minGap = hasDishwasher ? 55 : 30;
+    
+    // Check if dishwasher is between sink and stove
+    const dishwasherBetween = isDishwasherBetweenSinkAndStove();
+    const minGap = dishwasherBetween ? 58 : 35;
 
     if (gap < minGap) {
         const wallName = sinkWall === 1 ? 'Wall 1' : 'Wall 2';
+        const reasonText = dishwasherBetween ? '(dishwasher between sink and stove requires extra space)' : '';
         errorDiv.innerHTML = `<strong>⚠️ Spacing Error on ${wallName}:</strong> Gap between sink and stove is ${Math.floor(gap)}"<br>
-        Minimum required: ${minGap}" ${hasDishwasher ? '(dishwasher requires extra space)' : ''}<br>
+        Minimum required: ${minGap}" ${reasonText}<br>
         Please adjust positions or move appliances to different walls.`;
         errorDiv.classList.add('show');
         return false;
@@ -561,7 +611,7 @@ function validateSpacing() {
 }
 
 // Real-time validation
-['sinkDistance', 'stoveDistance', 'sinkSide', 'stoveSide', 'sinkWidth', 'hasDishwasher', 'sinkWall', 'stoveWall'].forEach(id => {
+['sinkDistance', 'stoveDistance', 'sinkSide', 'stoveSide', 'sinkWidth', 'hasDishwasher', 'sinkWall', 'stoveWall', 'dishwasherWall', 'dishwasherSide'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
         el.addEventListener('change', validateSpacing);
@@ -591,6 +641,9 @@ document.getElementById('layoutForm').addEventListener('submit', async (e) => {
     const isLShape = layoutType === 'lshape';
 
     const submissionId = 'KL' + Date.now().toString(36).toUpperCase();
+    
+    // Determine if dishwasher is between sink and stove for validation record
+    const dishwasherBetween = (hasSink === 'y' && hasStove === 'y' && hasDishwasher === 'y') ? isDishwasherBetweenSinkAndStove() : false;
 
     const formData = {
         id: submissionId,
@@ -648,8 +701,8 @@ document.getElementById('layoutForm').addEventListener('submit', async (e) => {
             spacingChecked: true,
             sinkAndStoveSameWall: hasSink === 'y' && hasStove === 'y' ? 
                 (getApplianceWall('sink') === getApplianceWall('stove')) : null,
-            minGapRequired: hasDishwasher === 'y' && hasSink === 'y' && hasStove === 'y' ? 55 : 
-                (hasSink === 'y' && hasStove === 'y' ? 30 : 0)
+            dishwasherBetweenSinkAndStove: dishwasherBetween,
+            minGapRequired: hasSink === 'y' && hasStove === 'y' ? (dishwasherBetween ? 58 : 35) : 0
         }
     };
 
